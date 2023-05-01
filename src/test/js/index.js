@@ -1,11 +1,10 @@
-import  { expect } from "earljs"
+import assert from 'node:assert'
 import { test } from "uvu"
 
-import { foo } from '../../../target/es6'
+import { verify } from '../../../target/es6'
 
-test('index (es6) - foo() result equals bar', () => {
-  expect(foo()).toEqual('bar')
+test('index (es6)', () => {
+  assert.equal(typeof verify, 'function')
 })
-
 
 test.run()

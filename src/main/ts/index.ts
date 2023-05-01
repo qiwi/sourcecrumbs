@@ -1,1 +1,1 @@
-export const foo = (): string => 'bar'
+export * from './sourcecrumbs'
