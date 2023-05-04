@@ -1,9 +1,9 @@
+import cp from 'node:child_process'
+import path from 'node:path'
 import {Readable} from 'node:stream'
 import {ReadableStream} from 'node:stream/web'
-import cp from 'node:child_process'
 import tar from 'tar'
 import fs from 'fs-extra'
-import path from 'node:path'
 import smv from 'sourcemap-validator'
 import {globby} from 'globby'
 import {temporaryDirectory} from 'tempy'
@@ -29,9 +29,15 @@ export const verifyPkg = async ({
   }, {})
 }
 
-export const getManifestUrl = (registry: string, name: string, version: string) => `${registry}/${name}/${version}`
+export const getPackumentUrl = (registry: string, name: string, version: string) => `${registry}/${name}/${version}`
 
 export const getTarballUrl = (registry: string, name: string, version: string) => `${registry}/${name}/-/${name.replace(/^.+(%2f|\/)/, '')}-${version}.tgz`
+
+export const fetchProvenance = async({name, registry, version}: any) =>
+  (await fetch(`${registry}/-/npm/v1/attestations/${name}@${version}`)).json()
+
+export const fetchPackument = async({name, version, registry}: any) =>
+  (await fetch(getPackumentUrl(registry, name, version))).json()
 
 export const fetchCommit = async ({repo, commit, cwd = temporaryDirectory()}: {repo: string, commit: string, cwd?: string}) =>
   new Promise((resolve, reject) => {
@@ -42,8 +48,6 @@ export const fetchCommit = async ({repo, commit, cwd = temporaryDirectory()}: {r
     child.on('error', reject)
     child.on('close', () => resolve(cwd))
   })
-
-
 
 export const fetchPkg = async ({
   name,
