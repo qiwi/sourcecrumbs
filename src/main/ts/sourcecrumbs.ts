@@ -9,53 +9,13 @@ import {globby} from 'globby'
 import {temporaryDirectory} from 'tempy'
 import parseUrl from 'parse-url'
 
-export type TPackument = {
-  name: string
-  version: string
-}
-
-export type TVerifyOptions = {
-  name: string,
-  version: string
-  registry?: string
-}
-
-type TRawAttestation = {
-  predicateType: string
-  bundle: {
-    mediaType: string
-    verificationMaterial: any
-    dsseEnvelope: {
-      payload: string
-      payloadType: string
-      signatures: Array<{
-        sig: string
-        keyid: string
-      }>
-    }
-  }
-  [index: string]: any
-}
-
-type TAttestation = {
-  context: any
-  raw: TRawAttestation
-}
-
-export type TRepository = {
-  type: string
-  url: string
-  hash?: string
-}
-
-export type TVerifyDigest = {
-  attestations: {
-    publish?: TAttestation
-    provenance?: TAttestation
-  }
-  repository: TRepository
-  contents: Record<string, any>
-}
+import {
+  TVerifyOptions,
+  TRepository,
+  TAttestation,
+  TRawAttestation,
+  TSourcemap
+} from './interface'
 
 const normalizeRepoUrl = (url: string) => {
   const opts = parseUrl(url)
@@ -199,22 +159,25 @@ export const validateSourcemap = (minifiedCode: string, sourceMap?: string | nul
   return false
 }
 
+export const getCoherence = (bundle: string, source: string, sm: TSourcemap) => {}
+
 export const verifyFiles = (targets: Record<string, string>, sources?: Record<string, string>) => {
-  const findMatch = (contents: string, file: string, sources: Record<string, string> = {}) =>
+  const findSource = (contents: string, file: string, sources: Record<string, string> = {}) =>
     sources[file] === contents ? file : Object.keys(sources).find(key => sources[key] === contents) || null
 
   // const sources
 
   return Object.entries(targets).reduce((m, [file, contents]) => {
     const sm = targets[`${file}.map`]
-    const smdata = sm ? JSON.parse(sm) : null
-    const match = findMatch(contents, file, sources || {})
+    const smdata: TSourcemap | null = sm ? JSON.parse(sm) : null
+    const source = findSource(contents, file, sources || {})
 
     m[file] = {
-      match,
+      source,
       sourcemap: sm ? {
-        sources: smdata,
-        valid: validateSourcemap(contents, targets[`${file}.map`], sources)
+        sources: smdata?.sources,
+        valid: validateSourcemap(contents, sm, sources),
+        coherence: null
       } : null
     }
 

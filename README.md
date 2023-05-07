@@ -17,6 +17,7 @@ We could try:
 * https://blog.sentry.io/2018/10/18/4-reasons-why-your-source-maps-are-broken/
 * https://stackoverflow.com/questions/44527036/how-can-i-check-source-map-transpiled-javascript-consistency
 * https://stackoverflow.com/questions/72263693/how-can-i-assert-minified-javascript-is-equivalent-to-source
+* https://sourcemaps.info/spec.html
 
 ## Licence
 [MIT](./LICENSE)
