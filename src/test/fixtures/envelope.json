@@ -1,0 +1,57 @@
+{
+  "_type": "https://in-toto.io/Statement/v0.1",
+  "subject": [
+    {
+      "name": "pkg:npm/zx-semrel@1.21.3",
+      "digest": {
+        "sha512": "8eb18ea2de8c96a21edfe05288fc0a8ea35ce2227943af4b50603254314829be5a49c4992b3a00faeb8a5c8f93333ee1ad737df3133cbb2b143a017a4d03dbaf"
+      }
+    }
+  ],
+  "predicateType": "https://slsa.dev/provenance/v0.2",
+  "predicate": {
+    "buildType": "https://github.com/npm/cli/gha/v2",
+    "builder": {
+      "id": "https://github.com/actions/runner"
+    },
+    "invocation": {
+      "configSource": {
+        "uri": "git+https://github.com/semrel-extra/zx-semrel@refs/heads/master",
+        "digest": {
+          "sha1": "a84ac1b80d34ed893f155a1a19be9950915da52d"
+        },
+        "entryPoint": ".github/workflows/release.yml"
+      },
+      "parameters": {},
+      "environment": {
+        "GITHUB_EVENT_NAME": "push",
+        "GITHUB_REF": "refs/heads/master",
+        "GITHUB_REPOSITORY": "semrel-extra/zx-semrel",
+        "GITHUB_REPOSITORY_ID": "369109218",
+        "GITHUB_REPOSITORY_OWNER_ID": "93783960",
+        "GITHUB_RUN_ATTEMPT": "1",
+        "GITHUB_RUN_ID": "4754383364",
+        "GITHUB_SHA": "a84ac1b80d34ed893f155a1a19be9950915da52d",
+        "GITHUB_WORKFLOW_REF": "semrel-extra/zx-semrel/.github/workflows/release.yml@refs/heads/master",
+        "GITHUB_WORKFLOW_SHA": "a84ac1b80d34ed893f155a1a19be9950915da52d"
+      }
+    },
+    "metadata": {
+      "buildInvocationId": "4754383364-1",
+      "completeness": {
+        "parameters": false,
+        "environment": false,
+        "materials": false
+      },
+      "reproducible": false
+    },
+    "materials": [
+      {
+        "uri": "git+https://github.com/semrel-extra/zx-semrel@refs/heads/master",
+        "digest": {
+          "sha1": "a84ac1b80d34ed893f155a1a19be9950915da52d"
+        }
+      }
+    ]
+  }
+}

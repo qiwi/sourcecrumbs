@@ -1,0 +1,1091 @@
+{
+  "_id": "toposource",
+  "_rev": "8-11a53864bcb1b536c995542460c353c9",
+  "name": "toposource",
+  "dist-tags": {
+    "latest": "1.1.4"
+  },
+  "versions": {
+    "1.0.0": {
+      "name": "toposource",
+      "version": "1.0.0",
+      "description": "Directed graphs analyzer for parallel traversals",
+      "main": "./target/cjs/index.js",
+      "module": "./target/esm/index.mjs",
+      "types": "./target/dts/index.d.ts",
+      "exports": {
+        ".": {
+          "require": "./target/cjs/index.js",
+          "import": "./target/esm/index.mjs",
+          "types": "./target/dts/index.d.ts"
+        }
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "scripts": {
+        "build": "concurrently 'npm:build:*'",
+        "build:esm": "node ./build.cjs && rename -f 's/\\.js$/\\.mjs/' target/esm/*.js",
+        "build:cjs": "node ./build.cjs --cjs",
+        "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
+        "lint": "eslint src",
+        "lint:fix": "yarn style --fix",
+        "verify": "yarn lint && yarn test",
+        "test": "yarn test:unit",
+        "test:unit": "c8 -r html -r text -r lcov --exclude src/test -o ./target/coverage uvu -r tsm src/test/ts",
+        "test:bench": "node src/test/bench/index.mjs"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/semrel-extra/toposource.git"
+      },
+      "devDependencies": {
+        "@types/node": "^18.14.0",
+        "@types/toposort": "^2.0.3",
+        "benchmark": "^2.1.4",
+        "c8": "^7.12.0",
+        "concurrently": "^7.6.0",
+        "esbuild": "^0.17.8",
+        "esbuild-node-externals": "^1.6.0",
+        "eslint": "^8.32.0",
+        "eslint-config-qiwi": "^2.0.8",
+        "toposort": "^2.0.2",
+        "tsm": "^2.3.0",
+        "typescript": "^4.9.4",
+        "uvu": "^0.5.6"
+      },
+      "keywords": [
+        "topological",
+        "sort",
+        "sorting",
+        "graphs",
+        "graph",
+        "dependency",
+        "list",
+        "dependencies",
+        "acyclic"
+      ],
+      "contributors": [
+        {
+          "name": "Choro Abdymanapov",
+          "email": "oljekechoro@mail.ru"
+        },
+        {
+          "name": "Anton Golub",
+          "email": "antongolub@antongolub.com"
+        }
+      ],
+      "license": "MIT",
+      "gitHead": "d823a59f2a3d39361120044a36443121809787f3",
+      "bugs": {
+        "url": "https://github.com/semrel-extra/toposource/issues"
+      },
+      "homepage": "https://github.com/semrel-extra/toposource#readme",
+      "_id": "toposource@1.0.0",
+      "_nodeVersion": "18.14.0",
+      "_npmVersion": "9.3.1",
+      "dist": {
+        "integrity": "sha512-k3m4PT+CEiYmthzJyCI9OYwGuVvWm8XmN5gi3fo1cEPtBtrQA/bBEoYSkWq89e2VxwnLUDzgM6PM2oU82Sf9jg==",
+        "shasum": "e9ef83942fcc87f81ffc8d6af1ae80104c27a133",
+        "tarball": "https://registry.npmjs.org/toposource/-/toposource-1.0.0.tgz",
+        "fileCount": 7,
+        "unpackedSize": 8191,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEUCIQD0pRJWcC2bRFlPbtTLR5W1Zf3+Yq/XUcSzhk2irNysAQIgT8FRP58yGpV8i3L7wmYmd4lAu0rtpu2DZrCL7ozfDDI="
+          }
+        ],
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJj81/eACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2Vmowkg/+P8UP67ATf5hGmtjRHNd1yvSzzJ/7cl4hcXVPrhqZtNz5mg+r\r\nKZZ7pXGlESve2YAyW10+kgjq2OH2zFiUySmnX7PPQe8veJeAciM+ruka5eh9\r\nIWy/IO8/N0vFndx1CTh0qFeRjJ6/H/UhjOqLCrR0INbwRe5Fd/Z0RVGN5mbX\r\nhIkNyKmv2+dRZdZY4+QwyjPgXpIcHycAQF7Fuu0CMCkUEbADLzU4x+g9/3Xj\r\nHFVBWKrROjKQoVlWJGSDaz5Znk9mRZz63MWgJtc47MPqGFZdwBhsIDDCVzYk\r\nBk3KYMBoPZQlmqIqp8K3tWmJ2QK9IUlLIUQs05BK16PdWRRMoIaSFvpaYuuR\r\ntqbpgsdZhXmzdIG90PeRcxmwNTWEzGVt1zwQrAkbyd9DuT/vd48e5FCbg8WB\r\nFW/mIgOzkm8gso0duA6LNMKICt+Gw6B5ziBJ5sfVnuXCiUJ/cG+i1b4d5WYt\r\nZHmtlMcnt6iUSK4UA2LJ7u3Nh4053f60aJ/qfouX63Jc6U/uAA9XLXT/vSGj\r\n4fdkls3j1diy1tUb/DIc2GXAf0RxEzIWVrvbBqXoC9ZFGlIbuEE1LoPDsc7k\r\nmGK2wtrtieapb8OJl1E9aXXkyB//yAFyQNKh86tDKTwGmJ4F8YuZh+wsSwBE\r\nZ7RII8U79hUNTi0RS2QEBxlHgweX5M3fCaE=\r\n=gnbZ\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "semrel-extra-bot",
+        "email": "semrel-extra-bot@hotmail.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "semrel-extra-bot",
+          "email": "semrel-extra-bot@hotmail.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/toposource_1.0.0_1676894174429_0.8884788837972208"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.0.1": {
+      "name": "toposource",
+      "version": "1.0.1",
+      "description": "Directed graphs analyzer for parallel traversals",
+      "main": "./target/cjs/index.js",
+      "module": "./target/esm/index.mjs",
+      "types": "./target/dts/index.d.ts",
+      "exports": {
+        ".": {
+          "require": "./target/cjs/index.js",
+          "import": "./target/esm/index.mjs",
+          "types": "./target/dts/index.d.ts"
+        }
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "scripts": {
+        "build": "concurrently 'npm:build:*'",
+        "build:esm": "node ./src/scripts/build.cjs && rename -f 's/\\.js$/\\.mjs/' target/esm/*.js",
+        "build:cjs": "node ./src/scripts/build.cjs --cjs",
+        "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
+        "build:docs": "typedoc --options src/main/typedoc",
+        "lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "format": "yarn test:lint --fix",
+        "test": "concurrently 'npm:test:*'",
+        "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "test:unit": "c8 -r html -r text -r lcov --exclude ./src/test -o ./target/coverage uvu -r tsm src/test/ts",
+        "test:it": "uvu -r tsm src/test/js",
+        "test:bench": "node src/test/bench/index.mjs"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/semrel-extra/toposource.git"
+      },
+      "devDependencies": {
+        "@types/node": "^18.14.0",
+        "@types/toposort": "^2.0.3",
+        "benchmark": "^2.1.4",
+        "c8": "^7.12.0",
+        "concurrently": "^7.6.0",
+        "esbuild": "^0.17.8",
+        "esbuild-node-externals": "^1.6.0",
+        "eslint": "^8.32.0",
+        "eslint-config-qiwi": "^2.0.8",
+        "toposort": "^2.0.2",
+        "tsm": "^2.3.0",
+        "typedoc": "^0.23.25",
+        "typescript": "^4.9.4",
+        "uvu": "^0.5.6"
+      },
+      "keywords": [
+        "topological",
+        "sort",
+        "sorting",
+        "graphs",
+        "graph",
+        "dependency",
+        "list",
+        "dependencies",
+        "directed",
+        "acyclic",
+        "dag"
+      ],
+      "contributors": [
+        {
+          "name": "Choro Abdymanapov",
+          "email": "oljekechoro@mail.ru"
+        },
+        {
+          "name": "Anton Golub",
+          "email": "antongolub@antongolub.com"
+        }
+      ],
+      "license": "MIT",
+      "gitHead": "942fd2575e361b33a46196f455d6b687450809df",
+      "bugs": {
+        "url": "https://github.com/semrel-extra/toposource/issues"
+      },
+      "homepage": "https://github.com/semrel-extra/toposource#readme",
+      "_id": "toposource@1.0.1",
+      "_nodeVersion": "18.14.1",
+      "_npmVersion": "9.3.1",
+      "dist": {
+        "integrity": "sha512-K96oPBUQF2rQpy1bpdF6UVQqWkUyVY9HVOt+Ec+Khr0lke02LJKDSILKcFTEmytH8Cr2DfOpStlKHDUKXXYwGA==",
+        "shasum": "8955e19b63701bb65a6ee793c94f9fe5040601f7",
+        "tarball": "https://registry.npmjs.org/toposource/-/toposource-1.0.1.tgz",
+        "fileCount": 7,
+        "unpackedSize": 9020,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEYCIQDtdGMi9m3JrORigc5xlSiL+RJSSJmarPv/LfltLOM2yQIhAPGtrckUTzI1qpRG9ewRaA1N/BmduLRhIGZHlVRp663m"
+          }
+        ],
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJj91/WACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2VmqFGQ/+LUVnkPvMsNgZIyiS7epYSg6EzpOS+BoAj2guWnr9vmhVxnN6\r\nrX5d/6aZxL4ixjJUZUpY3TRcW1szQgqjvcJ3//SxtjffbG3krhQ4KeDVwGkd\r\nhJn/zPZH7GAfxWmvWL+SNwbrS00fzxO/Le+hFkZUCTshFRDH7jB0AQUV9UpC\r\n5JXWsT+4x6xS/RPbXGPkbkbre89gYiJgNY352xbuDrMChxsX8sXLaUgLIYBk\r\nHpj55L24kNhaHm+DYnpctd7UN1rhEH1Wz6/NbyTDE2EsR1WtRNQYWL8yuUtW\r\nrnAt25XzvOyDPQyMiEwb5SErUQoF/Bz9aeIRgM/Cuhhg5mJtqqRxKXRwaTNw\r\nnTquOKKH7f0E4+rK3xtM8pQbrmw6qC9K+TvxikgIUpVfok1/Ko7djpLSO3zE\r\n+kzWYX0G7sNn85b2McORpDwFUA0oRIT4t8K7aXmSoJcYFNofTy/9Lz0GHWZL\r\nKZFJAHvUBR+KhwKqBEFrF3fmy3UByRoDDDm+vhrY3wqZKlgsVXdf8mnts7pc\r\nTDQqnD0uDV03omUWll1QiHOLMy4GQ6ruIvUB0KCVoLJAVlGgmHDUIUQBgpg2\r\noWqHgruQNfd4xQ5RuA7y75H23ymtSwZ/0rhbnmTM8M8gZMTgTZTTKIMeqv3Q\r\nlekr4nWeJ8HcEOOAN2RqgZIK57RExYm27t8=\r\n=WIIp\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "semrel-extra-bot",
+        "email": "semrel-extra-bot@hotmail.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "semrel-extra-bot",
+          "email": "semrel-extra-bot@hotmail.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/toposource_1.0.1_1677156310656_0.39283152035580815"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.0.2": {
+      "name": "toposource",
+      "version": "1.0.2",
+      "description": "Directed graphs analyzer for parallel traversals",
+      "main": "./target/cjs/index.js",
+      "module": "./target/esm/index.mjs",
+      "types": "./target/dts/index.d.ts",
+      "exports": {
+        ".": {
+          "require": "./target/cjs/index.js",
+          "import": "./target/esm/index.mjs",
+          "types": "./target/dts/index.d.ts"
+        }
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "scripts": {
+        "build": "concurrently 'npm:build:*'",
+        "build:esm": "node ./src/scripts/build.cjs && rename -f 's/\\.js$/\\.mjs/' target/esm/*.js",
+        "build:cjs": "node ./src/scripts/build.cjs --cjs",
+        "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
+        "build:docs": "typedoc --options src/main/typedoc",
+        "lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "format": "yarn test:lint --fix",
+        "test": "concurrently 'npm:test:*'",
+        "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "test:unit": "c8 -r html -r text -r lcov --exclude ./src/test -o ./target/coverage uvu -r tsm src/test/ts",
+        "test:it": "uvu -r tsm src/test/js",
+        "test:bench": "node src/test/bench/index.mjs"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/semrel-extra/toposource.git"
+      },
+      "devDependencies": {
+        "@types/node": "^18.14.0",
+        "@types/toposort": "^2.0.3",
+        "benchmark": "^2.1.4",
+        "c8": "^7.12.0",
+        "concurrently": "^7.6.0",
+        "esbuild": "^0.17.8",
+        "esbuild-node-externals": "^1.6.0",
+        "eslint": "^8.32.0",
+        "eslint-config-qiwi": "^2.0.8",
+        "toposort": "^2.0.2",
+        "tsm": "^2.3.0",
+        "typedoc": "^0.23.25",
+        "typescript": "^4.9.4",
+        "uvu": "^0.5.6"
+      },
+      "keywords": [
+        "topological",
+        "sort",
+        "sorting",
+        "graphs",
+        "graph",
+        "dependency",
+        "list",
+        "dependencies",
+        "directed",
+        "acyclic",
+        "dag"
+      ],
+      "contributors": [
+        {
+          "name": "Choro Abdymanapov",
+          "email": "oljekechoro@mail.ru"
+        },
+        {
+          "name": "Anton Golub",
+          "email": "antongolub@antongolub.com"
+        }
+      ],
+      "license": "MIT",
+      "gitHead": "59e710919137bff83e2f3651c4898bfa2c68a324",
+      "bugs": {
+        "url": "https://github.com/semrel-extra/toposource/issues"
+      },
+      "homepage": "https://github.com/semrel-extra/toposource#readme",
+      "_id": "toposource@1.0.2",
+      "_nodeVersion": "18.14.1",
+      "_npmVersion": "9.3.1",
+      "dist": {
+        "integrity": "sha512-rg31WDQ72g5wI2KhlAKipbD2QLwB61Pc3o1YsoTtxpXg3iXIyBCmTp7TdfhTBRabfpKtWQ9E5FBNwSS5nJUeoA==",
+        "shasum": "e008c20d952e77ec2630ac1b6099fbee5c8c5e6c",
+        "tarball": "https://registry.npmjs.org/toposource/-/toposource-1.0.2.tgz",
+        "fileCount": 7,
+        "unpackedSize": 9006,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEUCIGA+q0Kx36QjZrT4jUXpynzRDUM6t+wu24/Q3qxEL84QAiEAxd6L/GzGYE5VLovlUUVG1ad5ucBDWD4sBr5nt/dW7kI="
+          }
+        ],
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJj92UjACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2VmolmA/+MY69thBb5f4vq/S9CIAtB5FMHn/RoIjbsJqHeCNTjtTala8U\r\nMvUnk31XCzRkmctKgOJ9QuKFjt7cW53+gaEEbPixb29VKbJugOn8IUJ2HsyZ\r\nIeKGkt6ONCiyYE1FGh8pryVX0zZ11hJN5hMwUItpYoAqEe17b0qgRd1r47wt\r\nfbLVYmnpsy8zB4FvZACgQj9BNEKSW6phoh2khECb5LxZ1Tn4z46hN6D48xPk\r\nK8uHf6TlIshlqvPOp8ceiBLVU6pcIxHXWvrD+AEsNqJfRFY2sB/TXQ1sQv3t\r\nj4Furst8oHx9efyXaDxdI2GhKU4lhU72jE12nQdXcvwYCG9k6xQJFlPKXxOp\r\nhsM1Z2cND3Ve59gHkMWT+o1ZECDj/76cN4Royyv8S5JnxUbXc5iu0h/TQ9/1\r\nUz9UzFUyDMxNbqgebulFRN8yG1OnMc0KEIKTCJb4DObXB/GwZ2Ps8JG8tZfl\r\nz8mujtEeLp7UukOO/O1T/KQPQpvK0AfalrRtVA3FO+cUdLd3Ej+xJ/UrNNtT\r\nrHsSJGDPIBQoSIV8OwNNeZUlOm5Lj5MKdyAv7iG21WfyyhsyF3O6qjYqIk6q\r\nf5SkFqNbUbSknuwH+BfL0bMpuzxWz/pMdodJJFxm8LNhclKXuwQejeWbbyWV\r\n9RAzmWx2KPCxS6taPsn9H/Y+1WdaM73AAGs=\r\n=53at\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "semrel-extra-bot",
+        "email": "semrel-extra-bot@hotmail.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "semrel-extra-bot",
+          "email": "semrel-extra-bot@hotmail.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/toposource_1.0.2_1677157667354_0.210298082262123"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.0.3": {
+      "name": "toposource",
+      "version": "1.0.3",
+      "description": "Directed graphs analyzer for parallel traversals",
+      "main": "./target/cjs/index.js",
+      "module": "./target/esm/index.mjs",
+      "types": "./target/dts/index.d.ts",
+      "exports": {
+        ".": {
+          "require": "./target/cjs/index.js",
+          "import": "./target/esm/index.mjs",
+          "types": "./target/dts/index.d.ts"
+        }
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "scripts": {
+        "build": "concurrently 'npm:build:*'",
+        "build:esm": "node ./src/scripts/build.cjs && rename -f 's/\\.js$/\\.mjs/' target/esm/*.js",
+        "build:cjs": "node ./src/scripts/build.cjs --cjs",
+        "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
+        "build:docs": "typedoc --options src/main/typedoc",
+        "lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "format": "yarn test:lint --fix",
+        "test": "concurrently 'npm:test:*'",
+        "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "test:unit": "c8 -r html -r text -r lcov --exclude ./src/test -o ./target/coverage uvu -r tsm src/test/ts",
+        "test:it": "uvu -r tsm src/test/js",
+        "test:bench": "node src/test/bench/index.mjs"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/semrel-extra/toposource.git"
+      },
+      "devDependencies": {
+        "@types/node": "^18.14.0",
+        "@types/toposort": "^2.0.3",
+        "benchmark": "^2.1.4",
+        "c8": "^7.12.0",
+        "concurrently": "^7.6.0",
+        "esbuild": "^0.17.8",
+        "esbuild-node-externals": "^1.6.0",
+        "eslint": "^8.32.0",
+        "eslint-config-qiwi": "^2.0.8",
+        "toposort": "^2.0.2",
+        "tsm": "^2.3.0",
+        "typedoc": "^0.23.25",
+        "typescript": "^4.9.4",
+        "uvu": "^0.5.6"
+      },
+      "keywords": [
+        "topological",
+        "sort",
+        "sorting",
+        "graphs",
+        "graph",
+        "dependency",
+        "list",
+        "dependencies",
+        "directed",
+        "acyclic",
+        "dag"
+      ],
+      "contributors": [
+        {
+          "name": "Choro Abdymanapov",
+          "email": "oljekechoro@mail.ru"
+        },
+        {
+          "name": "Anton Golub",
+          "email": "antongolub@antongolub.com"
+        }
+      ],
+      "license": "MIT",
+      "gitHead": "fc48a9a46a2c6289d2697a0f67c12c6e11f99a11",
+      "bugs": {
+        "url": "https://github.com/semrel-extra/toposource/issues"
+      },
+      "homepage": "https://github.com/semrel-extra/toposource#readme",
+      "_id": "toposource@1.0.3",
+      "_nodeVersion": "18.14.1",
+      "_npmVersion": "9.3.1",
+      "dist": {
+        "integrity": "sha512-XCW7erMOQd4gNLirgC1tRlTToZ/GuzCock4caiAekMrPaDv7G8yqZURh4UGoJAqmQLdt7QmZ/B3ObHAMtvuYoA==",
+        "shasum": "6fb4ccaf23bcd33a17240fd53b93890b1dd3d3b5",
+        "tarball": "https://registry.npmjs.org/toposource/-/toposource-1.0.3.tgz",
+        "fileCount": 8,
+        "unpackedSize": 11511,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEUCIFHww/S45GijO93HizpwH1ekD/PxgQ/suPrzGkVt9GjXAiEAyKM7mMUtimg78xTaj13uvbU1j6Nlsn59pWWcEEftKZM="
+          }
+        ],
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJj93Q/ACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2VmrkKQ/9HF9W9QG84jBV8+3yIwDUKMKK6s3Xh/QgjSZ7GD6FlkycnhCp\r\n4c72VZq9DbWkijg/upFebqUzgcn5fzzGMi1ooviAuE55ekUtZdnB/Vq7HUhC\r\n8/cHu5/VDIIBTGIxn1j83tYC6xGpx8EhDCYk6GGhMNDp3BrOAgMINf95Sp/M\r\nXCgTx/bupXSTXTTQpiIeJlTyImEipOu4nmnrREOWxgT1Dxw8tVv4H9ulpOXI\r\nkyppVGzcQTTg/SNxc00UXmcrYdhq7VjitHSx6H86eC7p2jRmEvFHdpSeJFdf\r\nb2K9pffn3ow02331bgz8+90MoyACMFDJFz1FhHLuIFxI+6UjFAWq3dD0vB/X\r\n6cewkn8CZNOFF06UDjR4/ObKcAeWx6HjPCmR2evmmDODKYJMnnOokjp8D3fr\r\noUFFVUNUwxcMMaiqieRAJCYc2u/+7Lcf3Nzh+jDgis9kiZSMvFGtIgiCZXW4\r\nsaYvJ5tap+OE/Dz+CKLBjKl8gpifr512mZITyKtchsWCxr+CMRQayh7R2WL2\r\nMOLsAvjN987vJEgI8gnyA6UrhSr8SXLDJQpisVRMgL2pzYRSGvlOw4QezZla\r\n7EXEx8Ccvm6DX22BM2SO4a87pNc2tvIpiRVbEOUeCag2Pt+8w5xPQfBvYKng\r\nBmZkwaB93orZ8pu/y2vLVAEiiGVfNApJih4=\r\n=ykdb\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "semrel-extra-bot",
+        "email": "semrel-extra-bot@hotmail.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "semrel-extra-bot",
+          "email": "semrel-extra-bot@hotmail.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/toposource_1.0.3_1677161535822_0.1657478250919826"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.1.0": {
+      "name": "toposource",
+      "version": "1.1.0",
+      "description": "Directed graphs analyzer for parallel traversals",
+      "main": "./target/cjs/index.js",
+      "module": "./target/esm/index.mjs",
+      "types": "./target/dts/index.d.ts",
+      "exports": {
+        ".": {
+          "require": "./target/cjs/index.js",
+          "import": "./target/esm/index.mjs",
+          "types": "./target/dts/index.d.ts"
+        }
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "scripts": {
+        "build": "concurrently 'npm:build:*'",
+        "build:esm": "node ./src/scripts/build.cjs && rename -f 's/\\.js$/\\.mjs/' target/esm/*.js",
+        "build:cjs": "node ./src/scripts/build.cjs --cjs",
+        "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
+        "build:docs": "typedoc --options src/main/typedoc",
+        "lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "format": "yarn test:lint --fix",
+        "test": "concurrently 'npm:test:*'",
+        "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "test:unit": "c8 -r html -r text -r lcov --exclude ./src/test -o ./target/coverage uvu -r tsm src/test/ts",
+        "test:it": "uvu -r tsm src/test/js",
+        "test:bench": "node src/test/bench/index.mjs"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/semrel-extra/toposource.git"
+      },
+      "devDependencies": {
+        "@types/node": "^18.14.1",
+        "@types/toposort": "^2.0.3",
+        "benchmark": "^2.1.4",
+        "c8": "^7.13.0",
+        "concurrently": "^7.6.0",
+        "esbuild": "^0.17.10",
+        "esbuild-node-externals": "^1.6.0",
+        "eslint": "^8.34.0",
+        "eslint-config-qiwi": "^2.0.8",
+        "toposort": "^2.0.2",
+        "tsm": "^2.3.0",
+        "typedoc": "^0.23.25",
+        "typescript": "^4.9.5",
+        "uvu": "^0.5.6"
+      },
+      "keywords": [
+        "topological",
+        "sort",
+        "sorting",
+        "graphs",
+        "graph",
+        "dependency",
+        "list",
+        "dependencies",
+        "directed",
+        "acyclic",
+        "dag"
+      ],
+      "contributors": [
+        {
+          "name": "Choro Abdymanapov",
+          "email": "oljekechoro@mail.ru"
+        },
+        {
+          "name": "Anton Golub",
+          "email": "antongolub@antongolub.com"
+        }
+      ],
+      "license": "MIT",
+      "gitHead": "bc1f6bea8d5270a24dfec71f9fa280639ce5da71",
+      "bugs": {
+        "url": "https://github.com/semrel-extra/toposource/issues"
+      },
+      "homepage": "https://github.com/semrel-extra/toposource#readme",
+      "_id": "toposource@1.1.0",
+      "_nodeVersion": "18.14.1",
+      "_npmVersion": "9.3.1",
+      "dist": {
+        "integrity": "sha512-+OuRfPbITeI9kiAkeVM5Fv8xFxnaYEySqkSo66EspFS8N49ZgzRfTffIzze9iFaMHaVOAAXng6XfpM8f03hkvg==",
+        "shasum": "3bee982d228f79c4a39d226bcaacd1320876a2b6",
+        "tarball": "https://registry.npmjs.org/toposource/-/toposource-1.1.0.tgz",
+        "fileCount": 8,
+        "unpackedSize": 11532,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEYCIQDg3Lr+jpmVQxWAEZ5zyXP3QyoxW+amlm2kklGYvH5ssgIhAPkgL8v00vxtWNnbjJ885qIp1xGCCZNU7M5O4UDXTZOa"
+          }
+        ],
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJj95eAACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2Vmq/Kw//Z0IqIbqWOwpbpHx+IFArULk3mQ/lINMzJO4w38mRp8CkB54M\r\nnZnznbIrS6JR30mJ1BMWNyzPLRFlIxuRU1gP112B/+eoRFj3cab4yBSqidnP\r\nGNt13Z5XK3+bEI5br0NuFQkQfwNIK0QSnS29wMlOfsv7Dtzt/cYiL/+GL6Us\r\nNpArvXF9+o9j0caztXWe6YmaAL/xdzqeDrhVfB4bGDWAauAh1IGpirdmM2Pd\r\npBc5zq1tPzDFjk7+eWJGmyb3G5uxRY9eBN/NSo4CsGFWN6GqgocgVkBEurZM\r\nRfJdrjaxIswzRvQNhwZONG561r7Nj2E6mF0Lpn3r/byOfVcYgBcsvhNZNDty\r\nSWq9BOFu8zs8xB3XdhBBv/JFmBfXuxflfxhXpLLc9LPZxt8TGtj3V/+OaaSH\r\ndHeH1NWMhJM4NbJY4msR6Q+m5v6C4smQ9sR+dFXTZQpS/STXt98SQ2dQqrkA\r\nKoaBmcQmrtITdVMLVqWfI9SLoMsfa8ICwfIRAfktVwpjIpBNMBws786PXUNH\r\nLNJq3dinly3QW52XUJ9gxjzgIkqeM7F8rStCvuK4ySaqwYAlLlrymUfqlb2b\r\nqPHDhzj77sTBraGuxc0lR6sRzLd8TQEok4SMPgcptfLVf4a5mp0mS1LJ+CKl\r\njmnDm679G9qzEv5Jj+Rr4Guytyb+XphDrQM=\r\n=28st\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "semrel-extra-bot",
+        "email": "semrel-extra-bot@hotmail.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "semrel-extra-bot",
+          "email": "semrel-extra-bot@hotmail.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/toposource_1.1.0_1677170560007_0.4628339283151752"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.1.1": {
+      "name": "toposource",
+      "version": "1.1.1",
+      "description": "Directed graphs analyzer for parallel traversals",
+      "main": "./target/cjs/index.js",
+      "module": "./target/esm/index.mjs",
+      "types": "./target/dts/index.d.ts",
+      "exports": {
+        ".": {
+          "require": "./target/cjs/index.js",
+          "import": "./target/esm/index.mjs",
+          "types": "./target/dts/index.d.ts"
+        }
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "scripts": {
+        "build": "concurrently 'npm:build:*'",
+        "build:esm": "node ./src/scripts/build.cjs && rename -f 's/\\.js$/\\.mjs/' target/esm/*.js",
+        "build:cjs": "node ./src/scripts/build.cjs --cjs",
+        "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
+        "build:docs": "typedoc --options src/main/typedoc",
+        "lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "format": "yarn test:lint --fix",
+        "test": "concurrently 'npm:test:*'",
+        "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "test:unit": "c8 -r html -r text -r lcov --exclude ./src/test -o ./target/coverage uvu -r tsm src/test/ts",
+        "test:it": "uvu -r tsm src/test/js",
+        "test:bench": "node src/test/bench/index.mjs"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/semrel-extra/toposource.git"
+      },
+      "devDependencies": {
+        "@types/node": "^18.14.1",
+        "@types/toposort": "^2.0.3",
+        "benchmark": "^2.1.4",
+        "c8": "^7.13.0",
+        "concurrently": "^7.6.0",
+        "esbuild": "^0.17.10",
+        "esbuild-node-externals": "^1.6.0",
+        "eslint": "^8.34.0",
+        "eslint-config-qiwi": "^2.0.8",
+        "toposort": "^2.0.2",
+        "tsm": "^2.3.0",
+        "typedoc": "^0.23.25",
+        "typescript": "^4.9.5",
+        "uvu": "^0.5.6"
+      },
+      "keywords": [
+        "topological",
+        "sort",
+        "sorting",
+        "graphs",
+        "graph",
+        "dependency",
+        "list",
+        "dependencies",
+        "directed",
+        "acyclic",
+        "dag"
+      ],
+      "contributors": [
+        {
+          "name": "Choro Abdymanapov",
+          "email": "oljekechoro@mail.ru"
+        },
+        {
+          "name": "Anton Golub",
+          "email": "antongolub@antongolub.com"
+        }
+      ],
+      "license": "MIT",
+      "gitHead": "4f8a6bd5bc16feb7f7a28e469f1f26d75ccc738a",
+      "bugs": {
+        "url": "https://github.com/semrel-extra/toposource/issues"
+      },
+      "homepage": "https://github.com/semrel-extra/toposource#readme",
+      "_id": "toposource@1.1.1",
+      "_nodeVersion": "18.14.1",
+      "_npmVersion": "9.3.1",
+      "dist": {
+        "integrity": "sha512-DROwRDkdeJj91yLtcCCaX54uqGTTHbs5EqyqE3zkF2vxi0fIqV1jawG6OpR8UOLw5/Vmu9O5PAn+uLh6/TMsrQ==",
+        "shasum": "e7b1bd15875b2a5aa57d8d2d2f57efd2c11292ec",
+        "tarball": "https://registry.npmjs.org/toposource/-/toposource-1.1.1.tgz",
+        "fileCount": 8,
+        "unpackedSize": 11556,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEYCIQCivclnJNY3K6qGXYCCKTzAf4C34DyD5ZOHXcVMFSeT4wIhANjutnmyi3xtM4NHz2666x1nUd3xzwyY60k5nhA5QHkx"
+          }
+        ],
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJj96FZACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2Vmr6sBAAlDOFXZYxHDO44YdHtY/So2pgcfzymmrpIt7Jda/uPNHynR+K\r\ngQJjAZ/SwnTrXIwrvb+4N+w9tbpzpva3ZC/ngkQBbIXEZZFZ/ZHJgvR7AZlo\r\nS1v1RJGSUJGlMasnHyeKGKVY9EUO6SbJ1a2imtxlBReiQBmWaZE68bp/HLtR\r\nYjFQ2aRvLBEq909cDOxvUDzfAH6Hm3Shn9UeZB1XS37N+EPmmLmw7SEwIOzj\r\nUZ1AB9flJvJQi+k9M6TtFlUFy1BHZnS4vQ9u5mCaad0Pls1OIywBUDJ+S7M4\r\nbaPyQxfOr0N5eUg53TKq7lOEYBkLHkxxkZmnI3/Zn4L0g3GWqwZv77Ngxh0K\r\nGIUuGA6h2fQtRSRNmMyWbE5o/3RO/+6xU3FZH7Fl5NYzOB1U49LTxcjs48N6\r\n87K+tDJoKT0IH2l2tnEGjxnk0MUiM6UmIcdhMw0d8jkhPvpycTXP0lFFFX5o\r\n/QbHIsz4irnidJVLck5GzKuvBqNr3puDXa96jV6kIbJQcFlFdjf4ykHcuJyP\r\nHcYWi4NyJeCj6CHVddGRLWtRwuiEASmGykusHe/zB3VMNM9QFCuot3jF8uR+\r\n+XUcNVPgSCjvWGcDxGag44czcj0FaKrBMyzyIsKx/OJGdH4WmznBIVfQr6Px\r\nP2h/4NDeVzVA6Qpb0a87yHU0BoFONOWROdw=\r\n=04fm\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "semrel-extra-bot",
+        "email": "semrel-extra-bot@hotmail.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "semrel-extra-bot",
+          "email": "semrel-extra-bot@hotmail.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/toposource_1.1.1_1677173081319_0.3444811443199769"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.1.2": {
+      "name": "toposource",
+      "version": "1.1.2",
+      "description": "Directed graphs analyzer for parallel traversals",
+      "main": "./target/cjs/index.js",
+      "module": "./target/esm/index.mjs",
+      "types": "./target/dts/index.d.ts",
+      "exports": {
+        ".": {
+          "require": "./target/cjs/index.js",
+          "import": "./target/esm/index.mjs",
+          "types": "./target/dts/index.d.ts"
+        }
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "scripts": {
+        "build": "concurrently 'npm:build:*'",
+        "build:esm": "node ./src/scripts/build.cjs && rename -f 's/\\.js$/\\.mjs/' target/esm/*.js",
+        "build:cjs": "node ./src/scripts/build.cjs --cjs",
+        "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
+        "build:docs": "typedoc --options src/main/typedoc",
+        "lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "format": "yarn test:lint --fix",
+        "test": "concurrently 'npm:test:*'",
+        "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "test:unit": "c8 -r html -r text -r lcov --exclude ./src/test -o ./target/coverage uvu -r tsm src/test/ts",
+        "test:it": "uvu -r tsm src/test/js",
+        "test:bench": "node src/test/bench/index.mjs"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/semrel-extra/toposource.git"
+      },
+      "devDependencies": {
+        "@types/node": "^18.14.2",
+        "@types/toposort": "^2.0.3",
+        "benchmark": "^2.1.4",
+        "c8": "^7.13.0",
+        "concurrently": "^7.6.0",
+        "esbuild": "^0.17.10",
+        "esbuild-node-externals": "^1.6.0",
+        "eslint": "^8.35.0",
+        "eslint-config-qiwi": "^2.0.8",
+        "toposort": "^2.0.2",
+        "tsm": "^2.3.0",
+        "typedoc": "^0.23.26",
+        "typescript": "^4.9.5",
+        "uvu": "^0.5.6"
+      },
+      "keywords": [
+        "topological",
+        "sort",
+        "sorting",
+        "graphs",
+        "graph",
+        "dependency",
+        "list",
+        "dependencies",
+        "directed",
+        "acyclic",
+        "dag"
+      ],
+      "contributors": [
+        {
+          "name": "Choro Abdymanapov",
+          "email": "oljekechoro@mail.ru"
+        },
+        {
+          "name": "Anton Golub",
+          "email": "antongolub@antongolub.com"
+        }
+      ],
+      "license": "MIT",
+      "gitHead": "c01fdff69772b3e3395384968038a3ba87191140",
+      "bugs": {
+        "url": "https://github.com/semrel-extra/toposource/issues"
+      },
+      "homepage": "https://github.com/semrel-extra/toposource#readme",
+      "_id": "toposource@1.1.2",
+      "_nodeVersion": "18.14.1",
+      "_npmVersion": "9.3.1",
+      "dist": {
+        "integrity": "sha512-zro3oNCzcG3ypskvotApO9QEboScy4a93iyowQe1lIdyld1b3lsCUx4CqvgUVf2x3AJJQ04RQuSRlgxDRwpUew==",
+        "shasum": "2ef891244442ec398c1c4e19196c5e2b96e4bd89",
+        "tarball": "https://registry.npmjs.org/toposource/-/toposource-1.1.2.tgz",
+        "fileCount": 8,
+        "unpackedSize": 11775,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEQCIE+qPkabc9Gne+XGkURXnKUZrt8NR1TuOXJ+RshOtVDZAiBmNGjukewaIjFuhY4BdnKH6h8a8rllEeeAucJExPkr2A=="
+          }
+        ],
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJj/knlACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2VmrO0g//cSki1WxlCFdge9e3oZ45jjTxjBrFinh3uO+vTM7HqcJvBptv\r\nCF3y4tXaMB+IMnqUhtYYnEZrA/UwekyhZ6lk297LZVtHUOvUJI7gKj32vPRQ\r\nf1Q7B6DvHlqQpOaOntc6PupjxwpBqnOvqgKdj7R5sYOceKpy3667PAwEJ4yr\r\nB22V6e39cuaWM6dyfrRl4kha8LePaWgki71Bw4arS0ddoDqpBGhijCw2n8IR\r\nkGc/FAMKH6bu/w6v2JdGWEUsYKnAwjx13J8KmOoGFEwvrVtxPsS8TqBRyGDM\r\n3t6LOHEYtn4X+P4CswH0ZM1oVA6kqi5NSKswiQJHdtZG7ExIHrEAgwBXCaSs\r\nYImqLAGBISznTqDw9H8YhHeIbrUlQUjie2o2G3h2ZSVNVDf9bzLXUmzd00K6\r\nU6TLb7Sd/KYPTjEXwivKfdccNfGUvH7ca3bMfNJJp6w3fQrr4YWDsz8xEYpi\r\nj4xE9lLN5TjaWsrs9SvE7orOl2xKGJtaRilVuPv4syQJ1JKJdUJLG5cqzpJl\r\nzFgxjY5J6nS78vAbVU99M9EiepJ6lq0pbMdvGn4G1QVIysqcB5Lnbi7WS7Iw\r\njakZV9ZgggyB9+sLaoJFx1FQOfzkyCU0sFO1hJgWqeR4RJzj7BQmPw1OnURr\r\nmuvCuvSpn3VAePCsnJhl4v/Ul4pZCtdytEs=\r\n=N30y\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "semrel-extra-bot",
+        "email": "semrel-extra-bot@hotmail.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "semrel-extra-bot",
+          "email": "semrel-extra-bot@hotmail.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/toposource_1.1.2_1677609445009_0.08186653931441223"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.1.3": {
+      "name": "toposource",
+      "version": "1.1.3",
+      "description": "Directed graphs analyzer for parallel traversals",
+      "main": "./target/cjs/index.js",
+      "module": "./target/esm/index.mjs",
+      "types": "./target/dts/index.d.ts",
+      "exports": {
+        ".": {
+          "require": "./target/cjs/index.js",
+          "import": "./target/esm/index.mjs",
+          "types": "./target/dts/index.d.ts"
+        }
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "scripts": {
+        "build": "concurrently 'npm:build:*'",
+        "build:esm": "node ./src/scripts/build.cjs && rename -f 's/\\.js$/\\.mjs/' target/esm/*.js",
+        "build:cjs": "node ./src/scripts/build.cjs --cjs",
+        "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
+        "build:docs": "typedoc --options src/main/typedoc",
+        "lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "format": "yarn test:lint --fix",
+        "test": "concurrently 'npm:test:*'",
+        "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "test:unit": "c8 -r html -r text -r lcov --exclude ./src/test -o ./target/coverage uvu -r tsm src/test/ts",
+        "test:it": "uvu -r tsm src/test/js",
+        "test:bench": "node src/test/bench/index.mjs"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/semrel-extra/toposource.git"
+      },
+      "devDependencies": {
+        "@types/node": "^18.15.10",
+        "@types/toposort": "^2.0.3",
+        "benchmark": "^2.1.4",
+        "c8": "^7.13.0",
+        "concurrently": "^7.6.0",
+        "esbuild": "^0.17.14",
+        "esbuild-node-externals": "^1.6.0",
+        "eslint": "^8.36.0",
+        "eslint-config-qiwi": "^2.1.1",
+        "toposort": "^2.0.2",
+        "tsm": "^2.3.0",
+        "typedoc": "^0.23.28",
+        "typescript": "^5.0.2",
+        "uvu": "^0.5.6"
+      },
+      "keywords": [
+        "topological",
+        "sort",
+        "sorting",
+        "graphs",
+        "graph",
+        "dependency",
+        "list",
+        "dependencies",
+        "directed",
+        "acyclic",
+        "dag"
+      ],
+      "contributors": [
+        {
+          "name": "Choro Abdymanapov",
+          "email": "oljekechoro@mail.ru"
+        },
+        {
+          "name": "Anton Golub",
+          "email": "antongolub@antongolub.com"
+        }
+      ],
+      "license": "MIT",
+      "gitHead": "164ca93b5edd42b3780631e408d994f281d9aa5a",
+      "bugs": {
+        "url": "https://github.com/semrel-extra/toposource/issues"
+      },
+      "homepage": "https://github.com/semrel-extra/toposource#readme",
+      "_id": "toposource@1.1.3",
+      "_nodeVersion": "18.15.0",
+      "_npmVersion": "9.5.0",
+      "dist": {
+        "integrity": "sha512-ddh/t4yqUXcpQgtV2tb2cjSU4bAQ7dw923OKE9Mi3DdsGNXEd0mwY1hzhhAeS7njcKJlE6Bj0BqI9W+rrpdT7g==",
+        "shasum": "0aa6becb9695d5190cd3c2064776a1efdd7ed4e8",
+        "tarball": "https://registry.npmjs.org/toposource/-/toposource-1.1.3.tgz",
+        "fileCount": 8,
+        "unpackedSize": 11793,
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEYCIQCv6oEE8nYmT8skmT8h8sDiXFv3C2ohn1JGociap3SiPgIhAPyYMseWyX8YBdRFwO8IIvaCpc0z8W380FDW8RW2dUpq"
+          }
+        ],
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJkIJM9ACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2VmqtDg/+NfwUEwn+JxCCJxelZjSKmRm0+lwIRYS6GLCIKGj5XchDhLHO\r\nxNTQxxrPGEpogx1i8YRafs+Z5pIaDNVtXQwIFlZk0emLEMHTZLaGH+TTHS+f\r\nuJe50KxKQyI4LFshXaJyw78X38jVKTGARZuKRB4e0QKZzFS1HmxmroFMadcJ\r\nAOt0yBe7+EOvB0zJlT8JRfAMk6Dw5osPVtTE1Fi+9fBV7FpGpblHHvon3JIg\r\n1laVdAvHxsELfaQayp3rBrDx0t7DSAy+YQM6vbx4jUHrordPyalkYGVgrvX1\r\nA/aBlqpiaf68WpcVco239dtEbvmUFgoMtZMoIeXqK1xsF5Wp27BN6MeXGMvK\r\n8Oph1rBnQ2xIN0dBK+H30agTCEJRd6VHLLFutkrlJvgHjX1CrvvVFK1ZSU2Z\r\npADIwbDQDEDrDeF3yvEYCaGW/WPtBPRr70EtJfahnB0t+fW33yAG/Gh/ogfB\r\nsdF5ocLNmzyd4E2dzrV6B4CxxgaECSWrXh+eDn61JLr3sZ8bEf9yOZIjO3ET\r\ngVdoXWDghzQZoXAYH8uOCtTbiTyYAgxkQgDBZQdn45xozi+LqrmkahPquKV9\r\nAoeQy+NtvQimH5zTECBsw4U7ivbvZIzAhEEe3cliwCWtEBDDrL/URq1XrC1n\r\nFE1w4x2IuI8mrMknLRvCU2EORTPVWIa2nSY=\r\n=zinv\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "semrel-extra-bot",
+        "email": "semrel-extra-bot@hotmail.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "semrel-extra-bot",
+          "email": "semrel-extra-bot@hotmail.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/toposource_1.1.3_1679856445676_0.5692664012432056"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.1.4": {
+      "name": "toposource",
+      "version": "1.1.4",
+      "description": "Directed graphs analyzer for parallel traversals",
+      "main": "./target/cjs/index.js",
+      "module": "./target/esm/index.mjs",
+      "types": "./target/dts/index.d.ts",
+      "exports": {
+        ".": {
+          "require": "./target/cjs/index.js",
+          "import": "./target/esm/index.mjs",
+          "types": "./target/dts/index.d.ts"
+        }
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "scripts": {
+        "build": "concurrently 'npm:build:*'",
+        "build:esm": "node ./src/scripts/build.cjs && rename -f 's/\\.js$/\\.mjs/' target/esm/*.js",
+        "build:cjs": "node ./src/scripts/build.cjs --cjs",
+        "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
+        "build:docs": "typedoc --options src/main/typedoc",
+        "lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "format": "yarn test:lint --fix",
+        "test": "concurrently 'npm:test:*'",
+        "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
+        "test:unit": "c8 -r html -r text -r lcov --exclude ./src/test -o ./target/coverage uvu -r tsm src/test/ts",
+        "test:it": "uvu -r tsm src/test/js",
+        "test:bench": "node src/test/bench/index.mjs"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/semrel-extra/toposource.git"
+      },
+      "devDependencies": {
+        "@types/node": "^18.16.1",
+        "@types/toposort": "^2.0.3",
+        "benchmark": "^2.1.4",
+        "c8": "^7.13.0",
+        "concurrently": "^8.0.1",
+        "esbuild": "^0.17.18",
+        "esbuild-node-externals": "^1.7.0",
+        "eslint": "^8.39.0",
+        "eslint-config-qiwi": "^2.1.1",
+        "toposort": "^2.0.2",
+        "tsm": "^2.3.0",
+        "typedoc": "^0.24.6",
+        "typescript": "^5.0.4",
+        "uvu": "^0.5.6"
+      },
+      "keywords": [
+        "topological",
+        "sort",
+        "sorting",
+        "graphs",
+        "graph",
+        "dependency",
+        "list",
+        "dependencies",
+        "directed",
+        "acyclic",
+        "dag"
+      ],
+      "contributors": [
+        {
+          "name": "Choro Abdymanapov",
+          "email": "oljekechoro@mail.ru"
+        },
+        {
+          "name": "Anton Golub",
+          "email": "antongolub@antongolub.com"
+        }
+      ],
+      "license": "MIT",
+      "gitHead": "e9beae36161a8d44ffa072c2a58321d50af87919",
+      "bugs": {
+        "url": "https://github.com/semrel-extra/toposource/issues"
+      },
+      "homepage": "https://github.com/semrel-extra/toposource#readme",
+      "_id": "toposource@1.1.4",
+      "_nodeVersion": "18.16.0",
+      "_npmVersion": "9.5.1",
+      "dist": {
+        "integrity": "sha512-WOHoshZjzHHfHf7zSEjgk48Fv29m4uqPj0fVFKnDbH0A35gyD8BncofU01pDRdaDQ8VIace8WuQ3ChHfpBjqvg==",
+        "shasum": "94a39668236b66dedd97c29157a0b46db9236862",
+        "tarball": "https://registry.npmjs.org/toposource/-/toposource-1.1.4.tgz",
+        "fileCount": 10,
+        "unpackedSize": 22775,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/toposource@1.1.4",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v0.2"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+            "sig": "MEYCIQDpYGjXH2cOyx4fnzmh1SC5mZ9eiwpKxp+vKHMOg8VmfAIhAJ8FpjYOYgHovEOxnXRPY6KYS1QPNntrnPUYCbQFuVoY"
+          }
+        ],
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJkSTfTACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2VmpnJw/9GT0hPcOkylm8wnXZyyFb3DC6KbJ3SXhGFjHm4oz8iV1HutJ9\r\nsbo36veiu9LKir2NcUzSXjSF9MoHzYmjgRsoN5fypdi2ku2aHfCAwgCQpI+l\r\nb8+6HjB4bew2+H0AreZ/3ocydjdA1FYotPhDMRrI98p7T94riyfKdzJ87ECF\r\nrjKD0qMOw9Y6rw0v2SRTFgs+SHZNiDKuyglteaxmpHqKjGhXME5wHLZpZSyO\r\nobKaFIgoFO9Pbfv0MI3oE39Qx/cVXnj8ZjndIHaAP/LwNuNtVSxrdewuTcXb\r\nCPIVvKWK91DNAcNePdh5SbV6wwz5IGWN+246s3rsut2gB+Tq4HVNLClTMTTA\r\nnyxn0iEnITa0MZkL8/xPyoBOeKco06KLybEH2+mRbVyjmIkEkWXuGq8btDac\r\n2dVbqSU/jkGKIGgFlYX+fo11y4i5oR7W6WO8BjRQHVDC2mkI3jB6MjZvW2WN\r\nIK5uPxomvLD6+6mlyKwRCmyi1tjZcViwSkovL9xDpNwrtFr7JPa3QjYBo6JL\r\nRM84M2djOvL7WCSQoq2XTWcjgjbqNgdV6CYu95E2g1Tsb0jjaJLuEHUB/vei\r\nGVu1Cw6UPTTEl7K+XchB2kJl+cpfhY8oG6jgXGQH8A7ELHo7hhStxVI8OJ89\r\nTiw2mYEqWDH7Ky5gcsprywXOkfXGGkOOmQ8=\r\n=GPL8\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "_npmUser": {
+        "name": "semrel-extra-bot",
+        "email": "semrel-extra-bot@hotmail.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "semrel-extra-bot",
+          "email": "semrel-extra-bot@hotmail.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages",
+        "tmp": "tmp/toposource_1.1.4_1682520018985_0.12503366136181082"
+      },
+      "_hasShrinkwrap": false
+    }
+  },
+  "time": {
+    "created": "2023-02-20T11:56:14.350Z",
+    "1.0.0": "2023-02-20T11:56:14.556Z",
+    "modified": "2023-04-26T14:40:19.399Z",
+    "1.0.1": "2023-02-23T12:45:10.840Z",
+    "1.0.2": "2023-02-23T13:07:47.598Z",
+    "1.0.3": "2023-02-23T14:12:15.955Z",
+    "1.1.0": "2023-02-23T16:42:40.192Z",
+    "1.1.1": "2023-02-23T17:24:41.493Z",
+    "1.1.2": "2023-02-28T18:37:25.180Z",
+    "1.1.3": "2023-03-26T18:47:25.847Z",
+    "1.1.4": "2023-04-26T14:40:19.172Z"
+  },
+  "maintainers": [
+    {
+      "name": "semrel-extra-bot",
+      "email": "semrel-extra-bot@hotmail.com"
+    }
+  ],
+  "description": "Directed graphs analyzer for parallel traversals",
+  "homepage": "https://github.com/semrel-extra/toposource#readme",
+  "keywords": [
+    "topological",
+    "sort",
+    "sorting",
+    "graphs",
+    "graph",
+    "dependency",
+    "list",
+    "dependencies",
+    "directed",
+    "acyclic",
+    "dag"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/semrel-extra/toposource.git"
+  },
+  "contributors": [
+    {
+      "name": "Choro Abdymanapov",
+      "email": "oljekechoro@mail.ru"
+    },
+    {
+      "name": "Anton Golub",
+      "email": "antongolub@antongolub.com"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/semrel-extra/toposource/issues"
+  },
+  "license": "MIT",
+  "readme": "# toposource\n[![CI](https://github.com/semrel-extra/toposource/actions/workflows/ci.yaml/badge.svg?branch=master&event=push)](https://github.com/semrel-extra/toposource/actions/workflows/ci.yaml)\n[![Maintainability](https://api.codeclimate.com/v1/badges/41fea7047ed5521e2075/maintainability)](https://codeclimate.com/github/semrel-extra/toposource/maintainability)\n[![Test Coverage](https://api.codeclimate.com/v1/badges/41fea7047ed5521e2075/test_coverage)](https://codeclimate.com/github/semrel-extra/toposource/test_coverage)\n> Directed graphs analyzer for parallel traversals\n\n## Usage\n\n```ts\nimport { analyze } from 'toposource'\n\nanalyze([['a', 'b'], ['b', 'c'], ['d', 'c'], ['e', 'f']])\n// →\n{\n  next: new Map([\n    ['a', ['b']],\n    ['b', ['c']],\n    ['d', ['c']],\n    ['e', ['f']]\n  ]),\n  prev: new Map([\n    ['b', ['a']],\n    ['c', ['b', 'd']],\n    ['f', ['e']]\n  ]),\n  sources: [ 'a', 'd', 'e' ],\n  queue: ['a', 'd', 'e', 'b', 'c', 'f'],\n  graphs: [{\n    sources: ['a', 'd'],\n    nodes: new Set(['a', 'b', 'd', 'c'])\n  }, {\n    sources: ['e'],\n    nodes: new Set(['e', 'f'])\n  },\n}\n```\n\n## Alternatives\n* [toposort](https://github.com/marcelklehr/toposort)\n* [batching-toposort](https://github.com/glebec/batching-toposort)\n* [js-graph-algorithms](https://github.com/chen0040/js-graph-algorithms)\n* [topology-runner](https://github.com/smartprocure/topology-runner)\n* [graph-data-structure](https://github.com/datavis-tech/graph-data-structure)\n\n## License\n[MIT](./LICENSE)\n",
+  "readmeFilename": "README.md"
+}

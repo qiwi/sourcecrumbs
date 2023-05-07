@@ -1,3 +1,14 @@
+export type TPackageRef = {
+  name: string
+  version: string
+  registry: string
+}
+
+export type TRepoRef = {
+  type: string
+  url: string
+  hash?: string
+}
 
 export type TSourcemap = {
   version: string
@@ -38,12 +49,6 @@ export type TRawAttestation = {
 export type TAttestation = {
   context: any
   raw: TRawAttestation
-}
-
-export type TRepository = {
-  type: string
-  url: string
-  hash?: string
 }
 
 export type TVerification = {

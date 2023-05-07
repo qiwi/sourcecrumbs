@@ -11,27 +11,24 @@ import parseUrl from 'parse-url'
 
 import {
   TVerifyOptions,
-  TRepository,
+  TRepoRef,
   TAttestation,
   TRawAttestation,
-  TSourcemap
+  TSourcemap, TPackageRef
 } from './interface'
-
-const normalizeRepoUrl = (url: string) => {
-  const opts = parseUrl(url)
-  return `git@${opts.resource}:${opts.pathname.slice(1)}`
-}
+import {getCoherence} from "./coherence";
 
 export const verifyPkg = async ({
-                                  name,
-                                  version,
-                                  registry = 'https://registry.npmjs.org'
-                                }: TVerifyOptions) => {
-  const packument = await fetchPackument({name, version, registry})
-  const repository: TRepository = {...packument.repository, hash: packument.gitHead}
-  const targets = await fetchPkg({name, version, registry})
+    name,
+    version,
+    registry = 'https://registry.npmjs.org'
+  }: TVerifyOptions) => {
+  const pkgRef = { name, version, registry }
+  const packument = await fetchPackument(pkgRef)
+  const repository: TRepoRef = {...packument.repository, hash: packument.gitHead}
+  const targets = await fetchPkg(pkgRef)
   const sources = await fetchSources(repository)
-  const attestations = await getAttestation({name, version, registry})
+  const attestations = await getAttestation(pkgRef)
   const entries = verifyFiles(targets, sources)
   // const results = await verifyFiles(files)
 
@@ -52,9 +49,9 @@ export const verifyPkg = async ({
   // }
 }
 
-const extractPayload = (v: string): any => JSON.parse(Buffer.from(v, 'base64').toString('utf8'))
+export const extractPayload = <D = any>(v: string): D => JSON.parse(Buffer.from(v, 'base64').toString('utf8'))
 
-export const getAttestation = async ({name, version, registry}: any) => {
+export const getAttestation = async ({name, version, registry}: TPackageRef) => {
   const raw: { attestations: TRawAttestation[] } = await fetchAttestation({name, version, registry})
   const predicateTypesAliasMap: Record<string, string> = {
     'https://slsa.dev/provenance/v0.2': 'provenance',
@@ -71,20 +68,21 @@ export const getAttestation = async ({name, version, registry}: any) => {
   }, {})
 }
 
-export const fetchSources = async ({url, hash = 'HEAD'}: TRepository) => {
-  const cwd = await fetchCommit({repo: normalizeRepoUrl(url), commit: hash})
-  return getFiles(cwd)
+
+export const formatRepoUrl = (rawRepositoryUrl: string) => {
+  const urlOpts = parseUrl(rawRepositoryUrl)
+  return `git@${urlOpts.resource}:${urlOpts.pathname.slice(1)}`
 }
 
-export const getPackumentUrl = (registry: string, name: string, version: string) => `${registry}/${name}/${version}`
+export const formatAttestationUrl = ({registry, name, version}: TPackageRef) => `${registry}/-/npm/v1/attestations/${name}@${version}`
 
-export const getTarballUrl = (registry: string, name: string, version: string) => `${registry}/${name}/-/${name.replace(/^.+(%2f|\/)/, '')}-${version}.tgz`
+export const formatPackumentUrl = ({registry, name, version}: TPackageRef) => `${registry}/${name}/${version}`
 
-export const fetchAttestation = async ({name, registry, version}: any) =>
-  (await fetch(`${registry}/-/npm/v1/attestations/${name}@${version}`)).json()
+export const formatTarballUrl = ({registry, name, version}: TPackageRef) => `${registry}/${name}/-/${name.replace(/^.+(%2f|\/)/, '')}-${version}.tgz`
 
-export const fetchPackument = async ({name, version, registry}: any) =>
-  (await fetch(getPackumentUrl(registry, name, version))).json()
+export const fetchAttestation = async (pkgRef: TPackageRef) => (await fetch(formatAttestationUrl(pkgRef))).json()
+
+export const fetchPackument = async (pkgRef: TPackageRef) => (await fetch(formatPackumentUrl(pkgRef))).json()
 
 export const fetchCommit = async ({repo, commit, cwd = temporaryDirectory()}: {
   repo: string,
@@ -102,15 +100,15 @@ export const fetchCommit = async ({repo, commit, cwd = temporaryDirectory()}: {
   })
 
 export const fetchPkg = async ({
-                                 name,
-                                 version,
-                                 registry = 'https://registry.npmjs.org',
-                                 cwd = temporaryDirectory()
-                               }: any) => {
+    name,
+    version,
+    registry,
+    cwd = temporaryDirectory()
+  }: TPackageRef & {cwd?: string}) => {
   const id = `${name}@${version}`
 
   try {
-    const tarballUrl = getTarballUrl(registry, name, version)
+    const tarballUrl = formatTarballUrl({registry, name, version})
     const file = path.resolve(cwd, 'package.tgz')
 
     await fetch(tarballUrl)
@@ -138,11 +136,16 @@ export const fetchPkg = async ({
     await fs.remove(file)
 
   } catch (e) {
-    console.error(`fetching '${id}' failed`)
+    console.error(`fetching ${id} ${registry} failed`)
     throw e
   }
 
-  return getFiles(cwd)
+  return readFiles(cwd)
+}
+
+export const fetchSources = async ({url, hash = 'HEAD'}: TRepoRef) => {
+  const cwd = await fetchCommit({repo: formatRepoUrl(url), commit: hash})
+  return readFiles(cwd)
 }
 
 export const validateSourcemap = (minifiedCode: string, sourceMap?: string | null, sources?: Record<string, string>): boolean => {
@@ -159,25 +162,25 @@ export const validateSourcemap = (minifiedCode: string, sourceMap?: string | nul
   return false
 }
 
-export const getCoherence = (bundle: string, source: string, sm: TSourcemap) => {}
+export const findSource = (contents: string, file: string, sources: Record<string, string>) =>
+  // TODO add smth like git diff
+  // https://stackoverflow.com/questions/11561498/how-to-compare-two-files-not-in-repo-using-git
+  sources[file] === contents ? file : Object.keys(sources).find(key => sources[key] === contents) || null
 
-export const verifyFiles = (targets: Record<string, string>, sources?: Record<string, string>) => {
-  const findSource = (contents: string, file: string, sources: Record<string, string> = {}) =>
-    sources[file] === contents ? file : Object.keys(sources).find(key => sources[key] === contents) || null
-
+export const verifyFiles = (targets: Record<string, string>, sources: Record<string, string> = {}) => {
   // const sources
 
-  return Object.entries(targets).reduce((m, [file, contents]) => {
-    const sm = targets[`${file}.map`]
-    const smdata: TSourcemap | null = sm ? JSON.parse(sm) : null
-    const source = findSource(contents, file, sources || {})
+  return Object.entries(targets).reduce((m, [name, contents]) => {
+    const sm = targets[`${name}.map`]
+    const source = findSource(contents, name, sources || {})
+    const sourcemap: TSourcemap = sm ? JSON.parse(sm) : null
 
-    m[file] = {
+    m[name] = {
       source,
       sourcemap: sm ? {
-        sources: smdata?.sources,
+        sources: sourcemap?.sources,
         valid: validateSourcemap(contents, sm, sources),
-        coherence: null
+        coherence: getCoherence({name, contents, sourcemap, sources})
       } : null
     }
 
@@ -186,7 +189,7 @@ export const verifyFiles = (targets: Record<string, string>, sources?: Record<st
   {} as Record<string, any>)
 }
 
-export const getFiles = async (cwd: string, absolute = false) => {
+export const readFiles = async (cwd: string, absolute = false) => {
   const files = await globby(['**/*'], {cwd, onlyFiles: true, absolute})
   const contents = await Promise.all(files.map((file) => fs.readFile(path.join(cwd, file), 'utf8')))
 
@@ -195,8 +198,6 @@ export const getFiles = async (cwd: string, absolute = false) => {
     return m
   }, {})
 }
-
-export const getPackageFiles = (cwd: string) => globby(['**/*'], {cwd, onlyFiles: true, absolute: true})
 
 // https://nodejs.org/api/packages.html
 // https://webpack.js.org/guides/package-exports/
