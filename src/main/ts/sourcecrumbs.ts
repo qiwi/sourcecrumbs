@@ -64,7 +64,8 @@ export const getAttestation = async ({name, version, registry}: TPackageRef) => 
 
 export const formatRepoUrl = (rawRepositoryUrl: string) => {
   const urlOpts = parseUrl(rawRepositoryUrl)
-  return `git@${urlOpts.resource}:${urlOpts.pathname.slice(1)}`
+  // return `git@${urlOpts.resource}:${urlOpts.pathname.slice(1)}`
+  return `https://${urlOpts.resource}${urlOpts.pathname}`
 }
 
 export const formatAttestationUrl = ({registry, name, version}: TPackageRef) => `${registry}/-/npm/v1/attestations/${name}@${version}`
