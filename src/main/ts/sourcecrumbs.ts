@@ -4,7 +4,6 @@ import {Readable} from 'node:stream'
 import {ReadableStream} from 'node:stream/web'
 import tar from 'tar'
 import fs from 'fs-extra'
-import smv from 'sourcemap-validator'
 import {globby} from 'globby'
 import {temporaryDirectory} from 'tempy'
 import parseUrl from 'parse-url'
@@ -14,9 +13,9 @@ import {
   TRepoRef,
   TAttestation,
   TRawAttestation,
-  TSourcemap, TPackageRef
+  TPackageRef
 } from './interface'
-import {getCoherence} from "./coherence";
+import { verifyFiles } from './verify'
 
 export const verifyPkg = async ({
     name,
@@ -112,8 +111,7 @@ export const fetchPkg = async ({
     const file = path.resolve(cwd, 'package.tgz')
 
     await fetch(tarballUrl)
-      .then(({body}) =>
-        new Promise((resolve, reject) => {
+      .then(({body}) => new Promise((resolve, reject) => {
           if (body) {
             // https://stackoverflow.com/questions/74324435/property-pipe-does-not-exist-on-type-readablestreamuint8array
             // https://2ality.com/2022/06/web-streams-nodejs.html#support-for-web-streams-in-node.js
@@ -126,7 +124,7 @@ export const fetchPkg = async ({
           } else {
             reject('empty package')
           }
-        }))
+      }))
 
     await tar.x({
       file,
@@ -146,47 +144,6 @@ export const fetchPkg = async ({
 export const fetchSources = async ({url, hash = 'HEAD'}: TRepoRef) => {
   const cwd = await fetchCommit({repo: formatRepoUrl(url), commit: hash})
   return readFiles(cwd)
-}
-
-export const validateSourcemap = (minifiedCode: string, sourceMap?: string | null, sources?: Record<string, string>): boolean => {
-  if (!sourceMap) {
-    return false
-  }
-  try {
-    smv(minifiedCode, sourceMap, sources)
-    return true
-  } catch (e) {
-    console.error(e)
-  }
-
-  return false
-}
-
-export const findSource = (contents: string, file: string, sources: Record<string, string>) =>
-  // TODO add smth like git diff
-  // https://stackoverflow.com/questions/11561498/how-to-compare-two-files-not-in-repo-using-git
-  sources[file] === contents ? file : Object.keys(sources).find(key => sources[key] === contents) || null
-
-export const verifyFiles = (targets: Record<string, string>, sources: Record<string, string> = {}) => {
-  // const sources
-
-  return Object.entries(targets).reduce((m, [name, contents]) => {
-    const sm = targets[`${name}.map`]
-    const source = findSource(contents, name, sources || {})
-    const sourcemap: TSourcemap = sm ? JSON.parse(sm) : null
-
-    m[name] = {
-      source,
-      sourcemap: sm ? {
-        sources: sourcemap?.sources,
-        valid: validateSourcemap(contents, sm, sources),
-        coherence: getCoherence({name, contents, sourcemap, sources})
-      } : null
-    }
-
-    return m
-  },
-  {} as Record<string, any>)
 }
 
 export const readFiles = async (cwd: string, absolute = false) => {
