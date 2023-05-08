@@ -92,7 +92,7 @@ export const fetchCommit = async ({repo, commit, cwd = temporaryDirectory()}: {
     const child = cp.spawn(`git clone -n --depth=1 ${repo} ${cwd} && git checkout ${commit}`, {
       cwd,
       shell: true,
-      // stdio: 'inherit'
+      // stdio: 'inherit' // debug
     })
     child.on('error', reject)
     child.on('close', () => resolve(cwd))
