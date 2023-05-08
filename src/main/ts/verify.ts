@@ -1,22 +1,31 @@
+import path from 'node:path'
 import smv from 'sourcemap-validator'
 import {TSourcemap} from './interface'
 
-export const verifyFiles = (targets: Record<string, string>, sources: Record<string, string> = {}) =>
-  Object.entries(targets).reduce((m, [name, contents]) => {
+export const verifyFiles = ({name, targets, sources = {}}: {name: string, targets: Record<string, string>, sources?: Record<string, string>}) => {
+  // Git repository may contain several packages codebases (monorepo), so we need to resolve the root at first
+  const root = findPkgRoot({name, sources})
+
+  return Object.entries(targets).reduce((m, [name, contents]) => {
     m[name] = {
       source: findSource({name, sources, contents}),
-      sourcemap: findSourcemap({name, sources, targets})
+      sourcemap: findSourcemap({name, sources, targets, root})
     }
 
     return m
   },
   {} as Record<string, any>)
+}
 
 
-export const findSourcemap = ({name, targets, sources}: {
+export const findPkgRoot = ({sources, name, cwd = '.'}: {sources: Record<string, string>, name: string, cwd?: string}): string =>
+  path.dirname(Object.keys(sources).find((source) => source.endsWith('/package.json') && sources[source].includes(`"name": "${name}"`)) || path.join(cwd, 'package.json'))
+
+export const findSourcemap = ({name, targets, sources, root}: {
   name: string
   sources: Record<string, string>
   targets: Record<string, string>
+  root: string
 }): {
   sources: string[]
   valid: boolean
@@ -29,8 +38,10 @@ export const findSourcemap = ({name, targets, sources}: {
   const contents = targets[name]
   const sourcemap: TSourcemap = JSON.parse(sm)
 
+  sourcemap.sources = sourcemap.sources.map(src => path.join(root, path.join('/', src)))
+
   return {
-    sources: sourcemap?.sources,
+    sources: sourcemap.sources,
     valid: validateSourcemap(contents, sm, sources),
     coherence: getCoherence({name, contents, sourcemap, sources})
   }

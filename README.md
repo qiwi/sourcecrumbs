@@ -6,7 +6,8 @@
 
 _This allows_, so let's try to implement a working draft. Suppose we have published a package with [sourcemaps](https://sourcemaps.info/spec.html) and provenance telemetry in its [packument](https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md).
 We could try:
-* match sourcemap data with the referenced git hosted sources via [sourcemap-validator](https://www.npmjs.com/package/sourcemap-validator)
+* compare file by file pkg inners with the bound repo commit.
+* match sourcemap data with the referenced git hosted sources via [sourcemap-validator](https://www.npmjs.com/package/sourcemap-validator).
 * verify that pkg target (bundle, dist, whatever) corresponds its sources somehow. Hmm... This may require heuristics, unminification, AST comparison or something like that.
 
 ## Refs

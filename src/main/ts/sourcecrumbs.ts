@@ -28,7 +28,7 @@ export const verifyPkg = async ({
   const targets = await fetchPkg(pkgRef)
   const sources = await fetchSources(repository)
   const attestations = await getAttestation(pkgRef)
-  const entries = verifyFiles(targets, sources)
+  const entries = verifyFiles({name, targets, sources})
   // const results = await verifyFiles(files)
 
   return {
