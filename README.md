@@ -12,6 +12,42 @@ We could try:
 * match sourcemap data with the referenced git hosted sources via [sourcemap-validator](https://www.npmjs.com/package/sourcemap-validator).
 * verify that pkg target (bundle, dist, whatever) corresponds its sources somehow. Hmm... This may require heuristics, unminification, AST comparison or something like that.
 
+## Usage
+
+```ts
+import {track} from '@qiwi/sourcecrumbs'
+
+const result = await track({
+  name: 'toposource',
+  version: '1.1.4',
+  registry: 'https://registry.npmjs.org'
+})
+// →
+{
+  'package.json': {
+    source: {
+    sources: [
+      'package.json'
+    ],
+      coherence: 0.9995309568480301
+    },
+    sourcemap: null
+  },
+  'target/cjs/index.js': {
+    source: null,
+    sourcemap: {
+      sources: [
+        'src/main/ts/index.ts',
+        'src/main/ts/toposource.ts'
+      ],
+      valid: true,
+      coherence: null
+    }
+  },
+  ...
+}
+```
+
 ## Refs
 * https://github.blog/2023-04-19-introducing-npm-package-provenance/
 * https://docs.npmjs.com/generating-provenance-statements

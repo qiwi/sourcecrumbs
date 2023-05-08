@@ -17,7 +17,7 @@ import {
 } from './interface'
 import { verifyFiles } from './verify'
 
-export const verifyPkg = async ({
+export const track = async ({
     name,
     version,
     registry = 'https://registry.npmjs.org'

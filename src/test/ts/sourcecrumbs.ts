@@ -1,7 +1,7 @@
 import { expect } from 'earljs'
 import { test } from 'uvu'
 
-import { fetchSources, fetchPkg, verifyPkg, fetchPackument, fetchAttestation } from '../../main/ts/sourcecrumbs'
+import { fetchSources, fetchPkg, track, fetchPackument, fetchAttestation } from '../../main/ts/sourcecrumbs'
 
 const pkgRef = {
   name: 'toposource',
@@ -15,8 +15,8 @@ const repoRef = {
   // hash: 'e9beae36161a8d44ffa072c2a58321d50af87919' // release commit
 }
 
-test('verifyPkg ', async () => {
-  expect(await verifyPkg(pkgRef)).toEqual({
+test('track() ', async () => {
+  expect(await track(pkgRef)).toEqual({
     meta: {
       pkgRef,
       repoRef
