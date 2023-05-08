@@ -1,4 +1,6 @@
 # sourcecrumbs
+[![Maintainability](https://api.codeclimate.com/v1/badges/b3da59ab8038c43530e6/maintainability)](https://codeclimate.com/github/qiwi/sourcecrumbs/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/b3da59ab8038c43530e6/test_coverage)](https://codeclimate.com/github/qiwi/sourcecrumbs/test_coverage)
 > Make npm provenance attestation a bit more code bound
 
 ## Concept
