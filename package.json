@@ -44,7 +44,6 @@
     "@types/fast-diff": "^1.2.0",
     "@types/sourcemap-validator": "^2.1.0",
     "fast-diff": "^1.2.0",
-    "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.1",
     "globby": "^13.1.4",
     "parse-url": "^8.1.0",
