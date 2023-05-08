@@ -3,10 +3,24 @@ import { test } from 'uvu'
 
 import { fetchSources, fetchPkg, verifyPkg, fetchPackument, fetchAttestation } from '../../main/ts/sourcecrumbs'
 
-const pkgRef = {name: 'toposource', version: '1.1.4', registry: 'https://registry.npmjs.org'}
+const pkgRef = {
+  name: 'toposource',
+  version: '1.1.4',
+  registry: 'https://registry.npmjs.org'
+}
+const repoRef = {
+  type: 'git',
+  url: 'git+https://github.com/semrel-extra/toposource.git',
+  hash: 'b4f56f4ce75460c670363457821c054ed4db8464',   // pushed code commit
+  // hash: 'e9beae36161a8d44ffa072c2a58321d50af87919' // release commit
+}
 
 test('verifyPkg ', async () => {
   expect(await verifyPkg(pkgRef)).toEqual({
+    meta: {
+      pkgRef,
+      repoRef
+    },
     entries: {
       LICENSE: {
         source: {
@@ -31,7 +45,7 @@ test('verifyPkg ', async () => {
           sources: [
             'package.json'
           ],
-          coherence: 100
+          coherence: 0.999_530_956_848_030_1
         },
         sourcemap: null
       },
@@ -91,11 +105,7 @@ test('fetchPkg', async () => {
 })
 
 test('fetchSources', async () => {
-  const sources = await fetchSources({
-    type: 'git',
-    url: 'git+https://github.com/semrel-extra/toposource.git',
-    hash: 'e9beae36161a8d44ffa072c2a58321d50af87919'
-  })
+  const sources = await fetchSources(repoRef)
   expect(Object.keys(sources).sort()).toEqual([
     'CHANGELOG.md',
     'LICENSE',

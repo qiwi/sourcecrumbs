@@ -51,22 +51,23 @@ export type TAttestation = {
   raw: TRawAttestation
 }
 
-export type TVerification = {
-  type: string
-  reliability: number
-}
 
 export type TFileEntry = {
   sources: Record<string, string>
   // verifications: TVerification[]
 }
 
+export type TVerifyContext = {
+  name: string
+  targets: Record<string, string>
+  sources: Record<string, string>
+  root: string
+}
+
 export type TVerifyDigest = {
-  // attestations: {
-  //   publish?: TAttestation
-  //   provenance?: TAttestation
-  // }
-  // repository: TRepository
-  // contents: Record<string, any>
   entries: Record<string, TFileEntry>
+  meta: {
+    pkgRef: TPackageRef
+    repoRef: TRepoRef
+  }
 }
