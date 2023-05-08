@@ -44,7 +44,7 @@ export const findSourcemap = ({
   return {
     sources: sourcemap.sources,
     valid: validateSourcemap(contents, sm, sources),
-    coherence: getCoherence({name, contents, sourcemap, sources})
+    coherence: getBundleCoherence({name, contents, sourcemap, sources})
   }
 }
 
@@ -69,18 +69,18 @@ export const findSource = ({
   if (_source !== undefined) {
     return {
       sources: [_name],
-      coherence: diffCoherence(contents, _source)
+      coherence: getDiffCoherence(contents, _source)
     }
   }
 
   return null
 }
 
-export const diffCoherence = (a: string, b: string): number =>
+export const getDiffCoherence = (a: string, b: string): number =>
   2 * diff(a, b).reduce((m, [d, value]) => m + (d === 0 ? value.length : 0), 0)
   / (a.length + b.length)
 
-export const getCoherence = ({
+export const getBundleCoherence = ({
   name,
   contents,
   sources,
