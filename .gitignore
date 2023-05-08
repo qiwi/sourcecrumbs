@@ -36,6 +36,7 @@ target/
 typings/
 flow-typed/
 buildstamp.json
+artifact.tar
 
 # Docs
 docs
