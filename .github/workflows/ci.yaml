@@ -134,15 +134,15 @@ jobs:
 #          NODE_OPTIONS: "--max_old_space_size=4096"
         run: yarn test
 
-#      - name: Cache coverage
-#        if: github.ref == 'refs/heads/master'
-#        id: cache-coverage
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            coverage
-#            package.json
-#          key: coverage-${{ needs.init.outputs.checksum }}
+      - name: Cache coverage
+        if: github.ref == 'refs/heads/master'
+        id: cache-coverage
+        uses: actions/cache@v3
+        with:
+          path: |
+            coverage
+            package.json
+          key: coverage-${{ needs.init.outputs.checksum }}
 
   test_pr:
     if: github.event_name == 'pull_request'
@@ -250,12 +250,12 @@ jobs:
           node-version: 16
 
       - name: Codeclimate
-        uses: paambaati/codeclimate-action@v3.0.0
+        uses: paambaati/codeclimate-action@v4.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageLocations: |
-            ${{github.workspace}}/coverage/lcov.info:lcov
+            ${{github.workspace}}/coverage/*.lcov:lcov
 
       - uses: actions/cache@v3
         id: yarn-cache
