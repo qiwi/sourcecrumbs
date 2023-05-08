@@ -10,10 +10,10 @@ import parseUrl from 'parse-url'
 
 import {
   TVerifyOptions,
+  TPackageRef,
   TRepoRef,
   TAttestation,
-  TRawAttestation,
-  TPackageRef
+  TRawAttestation
 } from './interface'
 import { verifyFiles } from './verify'
 
@@ -23,29 +23,23 @@ export const verifyPkg = async ({
     registry = 'https://registry.npmjs.org'
   }: TVerifyOptions) => {
   const pkgRef = { name, version, registry }
-  const packument = await fetchPackument(pkgRef)
-  const repository: TRepoRef = {...packument.repository, hash: packument.gitHead}
-  const targets = await fetchPkg(pkgRef)
-  const sources = await fetchSources(repository)
-  const attestations = await getAttestation(pkgRef)
+  const [packument, targets, attestations] = await Promise.all([
+    fetchPackument(pkgRef),
+    fetchPkg(pkgRef),
+    getAttestation(pkgRef)
+  ])
+  const hash = attestations?.provenance?.context?.predicate.invocation.configSource.digest.sha1 || packument.gitHead
+  const repoRef: TRepoRef = {...packument.repository, hash}
+  const sources = await fetchSources(repoRef)
   const entries = verifyFiles({name, targets, sources})
-  // const results = await verifyFiles(files)
 
   return {
-    entries
+    entries,
+    meta: {
+      repoRef,
+      pkgRef
+    }
   }
-
-  // const contents = files.reduce<Record<string, any>>((m, file, i) => {
-  //   m[path.relative(pkgDir, file)] = results[i]
-  //   return m
-  // }, {})
-
-  // return {
-  //   repository,
-  //   attestations,
-  //   contents,
-  //   packument
-  // }
 }
 
 export const extractPayload = <D = any>(v: string): D => JSON.parse(Buffer.from(v, 'base64').toString('utf8'))
@@ -89,7 +83,7 @@ export const fetchCommit = async ({repo, commit, cwd = temporaryDirectory()}: {
   cwd?: string
 }): Promise<string> =>
   new Promise((resolve, reject) => {
-    const child = cp.spawn(`git clone -n --depth=1 ${repo} ${cwd} && git checkout ${commit}`, {
+    const child = cp.spawn(`git clone -n ${repo} ${cwd} && git checkout ${commit}`, {
       cwd,
       shell: true,
       // stdio: 'inherit' // debug
@@ -153,21 +147,5 @@ export const readFiles = async (cwd: string, absolute = false) => {
   return files.reduce<Record<string, string>>((m, file, i) => {
     m[file] = contents[i]
     return m
-  }, {})
-}
-
-// https://nodejs.org/api/packages.html
-// https://webpack.js.org/guides/package-exports/
-type Entry = string | string[] | Record<string, string | string[] | Record<string, string | string[]>>
-
-export const getExportsEntries = (exports: string | Entry): [string, string[]][] => {
-  const entries: [string, Entry][] = Object.entries(exports)
-  const parseConditional = (e: Entry): string[] => typeof e === 'string' ? [e] : Object.values(e).map(parseConditional).flat(2)
-
-  // has subpaths
-  if (typeof exports !== 'string' && Object.keys(exports).some((k) => k.startsWith('.'))) {
-    return entries.map(([k, v]) => [k, parseConditional(v)])
-  }
-
-  return [['.', parseConditional(exports)]]
+  }, Object.defineProperty({}, '__cwd', {value: cwd, enumerable: false}))
 }

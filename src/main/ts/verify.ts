@@ -1,15 +1,17 @@
 import path from 'node:path'
 import smv from 'sourcemap-validator'
-import {TSourcemap} from './interface'
+import diff from 'fast-diff'
+import { TSourcemap, TVerifyContext } from './interface'
 
 export const verifyFiles = ({name, targets, sources = {}}: {name: string, targets: Record<string, string>, sources?: Record<string, string>}) => {
   // Git repository may contain several packages codebases (monorepo), so we need to resolve the root at first
   const root = findPkgRoot({name, sources})
 
-  return Object.entries(targets).reduce((m, [name, contents]) => {
-    m[name] = {
-      source: findSource({name, sources, contents}),
-      sourcemap: findSourcemap({name, sources, targets, root})
+  return Object.keys(targets).reduce((m, name) => {
+    const ctx: TVerifyContext = {name, sources, targets, root}
+      m[name] = {
+      source: findSource(ctx),
+      sourcemap: findSourcemap(ctx)
     }
 
     return m
@@ -17,16 +19,15 @@ export const verifyFiles = ({name, targets, sources = {}}: {name: string, target
   {} as Record<string, any>)
 }
 
-
 export const findPkgRoot = ({sources, name, cwd = '.'}: {sources: Record<string, string>, name: string, cwd?: string}): string =>
   path.dirname(Object.keys(sources).find((source) => source.endsWith('/package.json') && sources[source].includes(`"name": "${name}"`)) || path.join(cwd, 'package.json'))
 
-export const findSourcemap = ({name, targets, sources, root}: {
-  name: string
-  sources: Record<string, string>
-  targets: Record<string, string>
-  root: string
-}): {
+export const findSourcemap = ({
+  name,
+  targets,
+  sources,
+  root
+}: TVerifyContext): {
   sources: string[]
   valid: boolean
   coherence: number | null
@@ -49,22 +50,35 @@ export const findSourcemap = ({name, targets, sources, root}: {
 
 export const findSource = ({
   name,
-  contents,
-  sources
-}: {contents: string, name: string, sources: Record<string, string>}) => {
-  // TODO add smth like git diff
-  // https://stackoverflow.com/questions/11561498/how-to-compare-two-files-not-in-repo-using-git
-
+  targets,
+  sources,
+  root
+}: TVerifyContext) => {
+  const contents = targets[name]
   const found = sources[name] === contents ? name : Object.keys(sources).find(key => sources[key] === contents)
-  if (!found) {
-    return null
+
+  if (found) {
+    return {
+      sources: [found],
+      coherence: 100
+    }
   }
 
-  return {
-    sources: [found],
-    coherence: 100
+  const _name = path.join(root, name)
+  const _source = sources[_name]
+  if (_source !== undefined) {
+    return {
+      sources: [_name],
+      coherence: diffCoherence(contents, _source)
+    }
   }
+
+  return null
 }
+
+export const diffCoherence = (a: string, b: string): number =>
+  2 * diff(a, b).reduce((m, [d, value]) => m + (d === 0 ? value.length : 0), 0)
+  / (a.length + b.length)
 
 export const getCoherence = ({
   name,
@@ -80,12 +94,12 @@ export const getCoherence = ({
   return null
 }
 
-export const validateSourcemap = (minifiedCode: string, sourceMap?: string | null, sources?: Record<string, string>): boolean => {
+export const validateSourcemap = (contents: string, sourceMap?: string | null, sources?: Record<string, string>): boolean => {
   if (!sourceMap) {
     return false
   }
   try {
-    smv(minifiedCode, sourceMap, sources)
+    smv(contents, sourceMap, sources)
     return true
   } catch (e) {
     console.error(e)

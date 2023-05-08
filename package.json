@@ -1,14 +1,15 @@
 {
-  "name": "sourcecrumbs",
+  "name": "@qiwi/sourcecrumbs",
+  "alias": "sourcecrumbs",
   "version": "0.0.0",
   "publishConfig": {
     "access": "public"
   },
   "description": "Make npm provenance attestation a bit more code bound",
   "source": "src/main/ts/index.ts",
-  "main": "target/bundle/blank-ts-repo.js",
-  "module": "target/bundle/blank-ts-repo.js",
-  "unpkg": "target/bundle/blank-ts-repo.umd.js",
+  "main": "target/bundle/sourcecrumbs.js",
+  "module": "target/bundle/sourcecrumbs.js",
+  "unpkg": "target/bundle/sourcecrumbs.umd.js",
   "types": "typings/index.d.ts",
   "typescript": {
     "definition": "typings/index.d.ts"
@@ -40,7 +41,9 @@
     "updeps": "npm_config_yes=true npx npm-upgrade"
   },
   "dependencies": {
+    "@types/fast-diff": "^1.2.0",
     "@types/sourcemap-validator": "^2.1.0",
+    "fast-diff": "^1.2.0",
     "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.1",
     "globby": "^13.1.4",
@@ -77,10 +80,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/qiwi/blank-ts-repo.git"
+    "url": "https://github.com/qiwi/sourcecrumbs.git"
   },
   "keywords": [
-    "blank-ts-repo"
+    "sourcecrumbs"
   ],
   "files": [
     "README.md",
