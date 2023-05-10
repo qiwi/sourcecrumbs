@@ -1,3 +1,8 @@
+## [0.0.2](https://github.com/qiwi/sourcecrumbs/compare/v0.0.1...v0.0.2) (2023-05-10)
+
+### Fixes & improvements
+* perf: API impovements ([53e35d0](https://github.com/qiwi/sourcecrumbs/commit/53e35d0f7dc5a55ce2b108d72debb6892522c774))
+
 ## [0.0.1](https://github.com/qiwi/sourcecrumbs/compare/v0.0.0...v0.0.1) (2023-05-08)
 
 ### Fixes & improvements
