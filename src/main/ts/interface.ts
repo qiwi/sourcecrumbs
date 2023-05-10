@@ -23,7 +23,7 @@ export type TPackument = {
   version: string
 }
 
-export type TVerifyOptions = {
+export type TOptions = {
   name: string,
   version: string
   registry?: string
@@ -52,20 +52,22 @@ export type TAttestation = {
 }
 
 
-export type TFileEntry = {
-  sources: Record<string, string>
+export type TTrack = {
+  coherence: null | number
+  refs: string[]
+  checks?: Record<string, any>
   // verifications: TVerification[]
 }
 
-export type TVerifyContext = {
+export type TSearchContext = {
   name: string
   targets: Record<string, string>
   sources: Record<string, string>
   root: string
 }
 
-export type TVerifyDigest = {
-  entries: Record<string, TFileEntry>
+export type TDigest = {
+  tracks: Record<string, Record<string, TTrack | null>>
   meta: {
     pkgRef: TPackageRef
     repoRef: TRepoRef

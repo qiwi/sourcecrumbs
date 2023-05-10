@@ -9,19 +9,20 @@ import {temporaryDirectory} from 'tempy'
 import parseUrl from 'parse-url'
 
 import {
-  TVerifyOptions,
+  TOptions,
   TPackageRef,
   TRepoRef,
   TAttestation,
-  TRawAttestation
+  TRawAttestation,
+  TDigest
 } from './interface'
-import { verifyFiles } from './verify'
+import { findTracks } from './tracker'
 
 export const track = async ({
     name,
     version,
     registry = 'https://registry.npmjs.org'
-  }: TVerifyOptions) => {
+  }: TOptions): Promise<TDigest> => {
   const pkgRef = { name, version, registry }
   const [packument, targets, attestations] = await Promise.all([
     fetchPackument(pkgRef),
@@ -31,10 +32,10 @@ export const track = async ({
   const hash = attestations?.provenance?.context?.predicate.invocation.configSource.digest.sha1 || packument.gitHead
   const repoRef: TRepoRef = {...packument.repository, hash}
   const sources = await fetchSources(repoRef)
-  const entries = verifyFiles({name, targets, sources})
+  const tracks = findTracks({name, targets, sources})
 
   return {
-    entries,
+    tracks,
     meta: {
       repoRef,
       pkgRef

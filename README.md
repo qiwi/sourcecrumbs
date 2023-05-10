@@ -23,28 +23,42 @@ const result = await track({
   registry: 'https://registry.npmjs.org'
 })
 // →
-{
-  'package.json': {
-    source: {
-    sources: [
-      'package.json'
-    ],
-      coherence: 0.9995309568480301
+result = {
+  meta: {
+    pkgRef: {
+      name: 'toposource',
+      version: '1.1.4',
+      registry: 'https://registry.npmjs.org'
     },
-    sourcemap: null
-  },
-  'target/cjs/index.js': {
-    source: null,
-    sourcemap: {
-      sources: [
-        'src/main/ts/index.ts',
-        'src/main/ts/toposource.ts'
-      ],
-      valid: true,
-      coherence: null
+    repoRef: {
+      type: 'git',
+      url: 'git+https://github.com/semrel-extra/toposource.git',
+      hash: 'b4f56f4ce75460c670363457821c054ed4db8464',
     }
   },
-  ...
+  tracks: {
+    'package.json': {
+      source: {
+        refs: ['package.json'],
+        coherence: 0.9995309568480301
+      },
+      sourcemap: null
+    },
+    'target/cjs/index.js': {
+      source: null,
+      sourcemap: {
+        refs: [
+          'src/main/ts/index.ts',
+          'src/main/ts/toposource.ts'
+        ],
+        checks: {
+          valid: true
+        },
+        coherence: null
+      }
+    },
+    // ...
+  }
 }
 ```
 

@@ -21,10 +21,10 @@ test('track() ', async () => {
       pkgRef,
       repoRef
     },
-    entries: {
+    tracks: {
       LICENSE: {
         source: {
-          sources: [
+          refs: [
             'LICENSE'
           ],
           coherence: 100
@@ -33,7 +33,7 @@ test('track() ', async () => {
       },
       'README.md': {
         source: {
-          sources: [
+          refs: [
             'README.md'
           ],
           coherence: 100
@@ -42,7 +42,7 @@ test('track() ', async () => {
       },
       'package.json': {
         source: {
-          sources: [
+          refs: [
             'package.json'
           ],
           coherence: 0.999_530_956_848_030_1
@@ -52,12 +52,14 @@ test('track() ', async () => {
       'target/cjs/index.js': {
         source: null,
         sourcemap: {
-          sources: [
+          refs: [
             'src/main/ts/index.ts',
             'src/main/ts/toposource.ts'
           ],
-          valid: true,
-          coherence: null
+          coherence: null,
+          checks: {
+            valid: true,
+          }
         }
       },
       'target/cjs/index.js.map': {
@@ -144,10 +146,10 @@ test('fetchAttestation', async () => {
   expect(await fetchAttestation({name: 'toposource', version: '1.1.4', registry: 'https://registry.npmjs.org'})).toEqual({
     attestations: [
       expect.objectWith({
-        predicateType: 'https://slsa.dev/provenance/v0.2'
+        predicateType: 'https://github.com/npm/attestation/tree/main/specs/publish/v0.1'
       }),
       expect.objectWith({
-        predicateType: 'https://github.com/npm/attestation/tree/main/specs/publish/v0.1'
+        predicateType: 'https://slsa.dev/provenance/v0.2'
       })
     ]
   })

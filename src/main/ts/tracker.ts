@@ -1,22 +1,22 @@
 import path from 'node:path'
 import smv from 'sourcemap-validator'
 import diff from 'fast-diff'
-import { TSourcemap, TVerifyContext } from './interface'
+import {TSourcemap, TTrack, TSearchContext, TDigest} from './interface'
 
-export const verifyFiles = ({name, targets, sources = {}}: {name: string, targets: Record<string, string>, sources?: Record<string, string>}) => {
-  // Git repository may contain several packages codebases (monorepo), so we need to resolve the root at first
+export const findTracks = ({name, targets, sources = {}}: {name: string, targets: Record<string, string>, sources?: Record<string, string>}) => {
+  // Git repository may contain several packages codebases (monorepo), so at first we need to resolve the root
   const root = findPkgRoot({name, sources})
 
   return Object.keys(targets).reduce((m, name) => {
-    const ctx: TVerifyContext = {name, sources, targets, root}
-      m[name] = {
+    const ctx: TSearchContext = {name, sources, targets, root}
+    m[name] = {
       source: findSource(ctx),
       sourcemap: findSourcemap(ctx)
     }
 
     return m
   },
-  {} as Record<string, any>)
+  {} as TDigest['tracks'])
 }
 
 export const findPkgRoot = ({sources, name, cwd = '.'}: {sources: Record<string, string>, name: string, cwd?: string}): string =>
@@ -27,11 +27,7 @@ export const findSourcemap = ({
   targets,
   sources,
   root
-}: TVerifyContext): {
-  sources: string[]
-  valid: boolean
-  coherence: number | null
-} | null => {
+}: TSearchContext): TTrack | null => {
   const sm = targets[`${name}.map`]
   if (!sm) {
     return null
@@ -42,9 +38,11 @@ export const findSourcemap = ({
   sourcemap.sources = sourcemap.sources.map(src => path.join(root, path.join('/', src)))
 
   return {
-    sources: sourcemap.sources,
-    valid: validateSourcemap(contents, sm, sources),
-    coherence: getBundleCoherence({name, contents, sourcemap, sources})
+    refs: sourcemap.sources,
+    coherence: getBundleCoherence({name, contents, sourcemap, sources}),
+    checks: {
+      valid: validateSourcemap(contents, sm, sources),
+    }
   }
 }
 
@@ -53,13 +51,13 @@ export const findSource = ({
   targets,
   sources,
   root
-}: TVerifyContext) => {
+}: TSearchContext): TTrack | null => {
   const contents = targets[name]
   const found = sources[name] === contents ? name : Object.keys(sources).find(key => sources[key] === contents)
 
   if (found) {
     return {
-      sources: [found],
+      refs: [found],
       coherence: 100
     }
   }
@@ -68,7 +66,7 @@ export const findSource = ({
   const _source = sources[_name]
   if (_source !== undefined) {
     return {
-      sources: [_name],
+      refs: [_name],
       coherence: getDiffCoherence(contents, _source)
     }
   }
